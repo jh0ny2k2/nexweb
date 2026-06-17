@@ -40,14 +40,8 @@ export default function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-6 gap-12 lg:gap-8">
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2.5 mb-5 group">
-              <div className="w-9 h-9 rounded-lg bg-gradient-accent flex items-center justify-center text-[#0a0a0a] font-bold text-sm shadow-lg shadow-[#f5b342]/20 group-hover:shadow-[#f5b342]/30 transition-all">
-                N
-              </div>
-              <span className="text-xl font-bold tracking-tight">
-                <span className="text-white">Nex</span>
-                <span className="text-gradient">Web</span>
-              </span>
+            <Link to="/" className="flex items-center mb-5 group">
+              <img src="/logo.png" alt="NexWeb" className="h-9 w-auto" />
             </Link>
             <p className="text-[#5a5652] text-sm leading-relaxed mb-6 max-w-sm">
               Creamos páginas web profesionales que impulsan tu negocio. Rápido, moderno y sin complicaciones.

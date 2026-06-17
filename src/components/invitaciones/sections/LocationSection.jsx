@@ -4,7 +4,7 @@ import Ornament from './shared/Ornament'
 export default function LocationSection({ data, style }) {
   return (
     <section className="px-6 py-10 text-center space-y-4" style={{ backgroundColor: style.bg }}>
-      <Ornament color={style.secondary} />
+      <Ornament color={style.secondary} variant={style.ornament} />
       <p className="text-xs tracking-[0.2em] uppercase" style={{ color: style.secondary }}>Ubicación</p>
       <div className="space-y-4 max-w-xs mx-auto">
         {[

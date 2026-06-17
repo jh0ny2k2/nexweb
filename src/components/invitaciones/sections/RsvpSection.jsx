@@ -6,7 +6,7 @@ export default function RsvpSection({ data, style }) {
   return (
     <section className="py-10 px-6" style={{ backgroundColor: isDark ? style.surface : `${style.primary}04` }}>
       <div className="text-center space-y-4 max-w-xs mx-auto">
-        <Ornament color={style.secondary} />
+        <Ornament color={style.secondary} variant={style.ornament} />
         <p className="text-xs tracking-[0.2em] uppercase" style={{ color: style.secondary }}>Confirmación</p>
         <p className="text-sm leading-relaxed" style={{ color: style.textMuted }}>
           Confirma tu asistencia antes del{' '}

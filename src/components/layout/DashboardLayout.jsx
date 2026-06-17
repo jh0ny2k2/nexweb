@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import {
   LayoutDashboard, Users, Globe, FolderKanban, Inbox,
   Layout, CreditCard, Settings,
-  ChevronLeft, Bell, Search, LogOut, Menu, X, Monitor, Loader,
+  ChevronLeft, Bell, Search, LogOut, Menu, X, Loader,
   Target, Send,
 } from 'lucide-react'
 import { useDashboard } from '../../context/DashboardContext'
@@ -33,10 +33,7 @@ export default function DashboardLayout() {
       } overflow-hidden`}>
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 shrink-0">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
-              <Monitor className="w-4 h-4 text-white" />
-            </div>
-            <span className={`font-bold text-gray-900 transition-opacity ${sidebarOpen ? '' : 'lg:opacity-0'}`}>NexWeb</span>
+            <img src="/logo.png" alt="NexWeb" className="h-8 w-auto" />
           </div>
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hidden lg:block transition-colors">
             <ChevronLeft className={`w-4 h-4 transition-transform ${!sidebarOpen && 'rotate-180'}`} />

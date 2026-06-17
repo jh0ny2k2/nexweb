@@ -13,7 +13,7 @@ export default function GuestMessagesSection({ data, style }) {
   return (
     <section className="px-6 py-10" style={{ backgroundColor: isDark ? style.surface : `${style.primary}04` }}>
       <div className="text-center space-y-4 mb-6">
-        <Ornament color={style.secondary} />
+        <Ornament color={style.secondary} variant={style.ornament} />
         <p className="text-xs tracking-[0.2em] uppercase" style={{ color: style.secondary }}>Dedicatorias</p>
         <p className="text-sm leading-relaxed max-w-xs mx-auto" style={{ color: style.textMuted }}>
           Deja un mensaje para los novios

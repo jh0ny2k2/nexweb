@@ -16,7 +16,7 @@ export default function FaqSection({ data, style }) {
   return (
     <section className="px-6 py-10" style={{ backgroundColor: isDark ? style.surface : `${style.primary}04` }}>
       <div className="text-center space-y-4 mb-8">
-        <Ornament color={style.secondary} />
+        <Ornament color={style.secondary} variant={style.ornament} />
         <p className="text-xs tracking-[0.2em] uppercase" style={{ color: style.secondary }}>Preguntas Frecuentes</p>
       </div>
       <div className="max-w-xs mx-auto space-y-3">

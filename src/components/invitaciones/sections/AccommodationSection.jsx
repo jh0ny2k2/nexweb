@@ -10,7 +10,7 @@ export default function AccommodationSection({ data, style }) {
   return (
     <section className="px-6 py-10" style={{ backgroundColor: `${style.primary}04` }}>
       <div className="text-center space-y-4 mb-8">
-        <Ornament color={style.secondary} />
+        <Ornament color={style.secondary} variant={style.ornament} />
         <p className="text-xs tracking-[0.2em] uppercase" style={{ color: style.secondary }}>Hospedaje</p>
         <p className="text-sm leading-relaxed max-w-xs mx-auto" style={{ color: style.textMuted }}>
           Recomendaciones para invitados que vienen de fuera

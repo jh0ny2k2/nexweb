@@ -10,7 +10,7 @@ export default function WeddingPartySection({ data, style }) {
 
   return (
     <section className="px-6 py-10 text-center space-y-6" style={{ backgroundColor: style.bg }}>
-      <Ornament color={style.secondary} />
+      <Ornament color={style.secondary} variant={style.ornament} />
       <p className="text-xs tracking-[0.2em] uppercase" style={{ color: style.secondary }}>Cortejo</p>
       <div className="max-w-xs mx-auto space-y-4">
         {members.map((m, i) => (
