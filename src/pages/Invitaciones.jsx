@@ -412,6 +412,123 @@ const designCards = [
   },
 ]
 
+function DesignPreview({ index }) {
+  const previews = [
+    // Clásico Eterno — ornate frame with heart
+    <svg key={0} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="white" opacity="0.9" />
+      <rect x="14" y="14" width="112" height="162" rx="1" fill="none" stroke="#D4A0A0" strokeWidth="0.5" />
+      <rect x="18" y="18" width="104" height="154" rx="1" fill="none" stroke="#D4A0A0" strokeWidth="0.3" opacity="0.5" />
+      <path d="M48,62 Q70,42 92,62 Q70,82 48,62" fill="none" stroke="#D4A0A0" strokeWidth="0.8" />
+      <text x="70" y="96" textAnchor="middle" fill="#1C1816" fontSize="9" fontFamily="serif" fontWeight="bold">Clásico</text>
+      <text x="70" y="110" textAnchor="middle" fill="#1C1816" fontSize="7" fontFamily="serif">Save the Date</text>
+      <line x1="40" y1="120" x2="100" y2="120" stroke="#D4A0A0" strokeWidth="0.4" />
+      <circle cx="70" cy="130" r="1.5" fill="#D4A0A0" opacity="0.6" />
+      <circle cx="66" cy="130" r="1.5" fill="#D4A0A0" opacity="0.4" />
+      <circle cx="74" cy="130" r="1.5" fill="#D4A0A0" opacity="0.4" />
+    </svg>,
+    // Rústico Encanto — botanical wreath
+    <svg key={1} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="#FEFCF7" opacity="0.9" />
+      <path d="M42,40 Q20,50 25,70 Q30,90 45,95" fill="none" stroke="#A0845C" strokeWidth="0.6" opacity="0.5" />
+      <path d="M98,40 Q120,50 115,70 Q110,90 95,95" fill="none" stroke="#A0845C" strokeWidth="0.6" opacity="0.5" />
+      <path d="M50,45 Q30,60 35,80 Q40,95 55,100" fill="none" stroke="#A0845C" strokeWidth="0.4" opacity="0.3" />
+      <path d="M90,45 Q110,60 105,80 Q100,95 85,100" fill="none" stroke="#A0845C" strokeWidth="0.4" opacity="0.3" />
+      <text x="70" y="98" textAnchor="middle" fill="#1C1816" fontSize="9" fontFamily="serif" fontWeight="bold">Rústico</text>
+      <text x="70" y="112" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="serif">&amp; Nuestras Familias</text>
+      <line x1="25" y1="122" x2="115" y2="122" stroke="#A0845C" strokeWidth="0.3" opacity="0.4" />
+      <circle cx="63" cy="132" r="1" fill="#A0845C" opacity="0.5" />
+      <circle cx="70" cy="130" r="1.5" fill="#A0845C" opacity="0.6" />
+      <circle cx="77" cy="132" r="1" fill="#A0845C" opacity="0.5" />
+    </svg>,
+    // Moderno Minimal — clean geometric
+    <svg key={2} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="white" opacity="0.9" />
+      <rect x="24" y="28" width="92" height="92" fill="none" stroke="#9CA3AF" strokeWidth="0.4" />
+      <rect x="34" y="38" width="72" height="72" fill="none" stroke="#9CA3AF" strokeWidth="0.2" opacity="0.5" />
+      <text x="70" y="88" textAnchor="middle" fill="#1C1816" fontSize="10" fontFamily="sans-serif" fontWeight="bold">Moderno</text>
+      <text x="70" y="102" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="sans-serif">Juntos</text>
+      <line x1="45" y1="140" x2="95" y2="140" stroke="#9CA3AF" strokeWidth="0.5" />
+      <rect x="65" y="148" width="10" height="10" fill="none" stroke="#9CA3AF" strokeWidth="0.3" transform="rotate(45 70 153)" />
+    </svg>,
+    // Boho Chic — mandala sun
+    <svg key={3} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="#FFFAF5" opacity="0.9" />
+      <circle cx="70" cy="65" r="22" fill="none" stroke="#D68C45" strokeWidth="0.4" />
+      <circle cx="70" cy="65" r="16" fill="none" stroke="#D68C45" strokeWidth="0.3" opacity="0.6" />
+      <circle cx="70" cy="65" r="4" fill="#D68C45" opacity="0.3" />
+      {[0,45,90,135,180,225,270,315].map(a => (
+        <line key={a} x1={70+18*Math.cos(a*Math.PI/180)} y1={65+18*Math.sin(a*Math.PI/180)} x2={70+26*Math.cos(a*Math.PI/180)} y2={65+26*Math.sin(a*Math.PI/180)} stroke="#D68C45" strokeWidth="0.4" opacity="0.5" />
+      ))}
+      <text x="70" y="108" textAnchor="middle" fill="#1C1816" fontSize="9" fontFamily="serif" fontWeight="bold">Boho</text>
+      <text x="70" y="120" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="serif">Free Spirit</text>
+      <path d="M30,140 Q50,130 70,140 Q90,150 110,140" fill="none" stroke="#D68C45" strokeWidth="0.4" opacity="0.4" />
+    </svg>,
+    // Romance Vintage — oval frame
+    <svg key={4} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="#FDF2F8" opacity="0.9" />
+      <ellipse cx="70" cy="78" rx="38" ry="48" fill="none" stroke="#D48A9E" strokeWidth="0.5" />
+      <ellipse cx="70" cy="78" rx="34" ry="44" fill="none" stroke="#D48A9E" strokeWidth="0.3" opacity="0.4" />
+      <text x="70" y="72" textAnchor="middle" fill="#1C1816" fontSize="8" fontFamily="serif" fontWeight="bold" fontStyle="italic">Romance</text>
+      <text x="70" y="86" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="serif">Vintage</text>
+      <path d="M50,100 Q70,112 90,100" fill="none" stroke="#D48A9E" strokeWidth="0.4" />
+      <circle cx="70" cy="110" r="1.5" fill="#D48A9E" opacity="0.5" />
+      <line x1="48" y1="115" x2="92" y2="115" stroke="#D48A9E" strokeWidth="0.2" opacity="0.3" />
+      <path d="M35,130 Q40,138 48,135" fill="none" stroke="#D48A9E" strokeWidth="0.3" opacity="0.4" />
+      <path d="M92,135 Q100,138 105,130" fill="none" stroke="#D48A9E" strokeWidth="0.3" opacity="0.4" />
+    </svg>,
+    // Gold Luxury — art deco
+    <svg key={5} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="#FFFBEB" opacity="0.9" />
+      <rect x="22" y="22" width="96" height="146" fill="none" stroke="#C9A96E" strokeWidth="0.6" />
+      <rect x="28" y="28" width="84" height="134" fill="none" stroke="#C9A96E" strokeWidth="0.3" opacity="0.5" />
+      <line x1="50" y1="42" x2="90" y2="42" stroke="#C9A96E" strokeWidth="0.4" />
+      <line x1="42" y1="46" x2="98" y2="46" stroke="#C9A96E" strokeWidth="0.2" opacity="0.4" />
+      <text x="70" y="82" textAnchor="middle" fill="#1C1816" fontSize="10" fontFamily="serif" fontWeight="bold">Luxury</text>
+      <text x="70" y="96" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="serif">Gold Edition</text>
+      <polygon points="70,108 78,118 62,118" fill="#C9A96E" opacity="0.15" />
+      <polygon points="70,114 78,124 62,124" fill="none" stroke="#C9A96E" strokeWidth="0.3" opacity="0.4" />
+      <line x1="35" y1="138" x2="105" y2="138" stroke="#C9A96E" strokeWidth="0.3" />
+      <line x1="42" y1="142" x2="98" y2="142" stroke="#C9A96E" strokeWidth="0.2" opacity="0.4" />
+    </svg>,
+    // Tropical Bliss — leaves
+    <svg key={6} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="#F0FDF4" opacity="0.9" />
+      <path d="M38,38 Q30,60 38,85 Q46,60 38,38" fill="#2D6A4F" opacity="0.08" />
+      <path d="M102,38 Q110,60 102,85 Q94,60 102,38" fill="#2D6A4F" opacity="0.08" />
+      <path d="M55,30 Q45,55 55,80" fill="none" stroke="#2D6A4F" strokeWidth="0.5" opacity="0.3" />
+      <path d="M85,30 Q95,55 85,80" fill="none" stroke="#2D6A4F" strokeWidth="0.5" opacity="0.3" />
+      <text x="70" y="90" textAnchor="middle" fill="#1C1816" fontSize="9" fontFamily="serif" fontWeight="bold">Tropical</text>
+      <text x="70" y="104" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="serif">Paradise</text>
+      <line x1="30" y1="116" x2="110" y2="116" stroke="#2D6A4F" strokeWidth="0.3" opacity="0.3" />
+      <circle cx="63" cy="128" r="1" fill="#2D6A4F" opacity="0.4" />
+      <circle cx="70" cy="126" r="1.5" fill="#2D6A4F" opacity="0.5" />
+      <circle cx="77" cy="128" r="1" fill="#2D6A4F" opacity="0.4" />
+      <path d="M45,140 Q55,135 60,140 Q55,145 45,140" fill="#2D6A4F" opacity="0.06" />
+      <path d="M80,140 Q85,135 95,140 Q85,145 80,140" fill="#2D6A4F" opacity="0.06" />
+    </svg>,
+    // Celestial — stars and moon
+    <svg key={7} viewBox="0 0 140 190" className="w-full h-full max-w-[130px] max-h-[170px]">
+      <rect x="8" y="8" width="124" height="174" rx="2" fill="#EEF2FF" opacity="0.9" />
+      <path d="M85,40 Q95,30 105,40 Q95,50 85,40" fill="#C7D2FE" opacity="0.7" />
+      <circle cx="65" cy="48" r="1" fill="#C7D2FE" opacity="0.6" />
+      <circle cx="52" cy="38" r="0.8" fill="#C7D2FE" opacity="0.5" />
+      <circle cx="108" cy="55" r="0.8" fill="#C7D2FE" opacity="0.4" />
+      <circle cx="58" cy="60" r="0.6" fill="#C7D2FE" opacity="0.4" />
+      <circle cx="100" cy="35" r="0.6" fill="#C7D2FE" opacity="0.4" />
+      <text x="70" y="92" textAnchor="middle" fill="#1C1816" fontSize="9" fontFamily="serif" fontWeight="bold">Celestial</text>
+      <text x="70" y="106" textAnchor="middle" fill="#7A7068" fontSize="6" fontFamily="serif">Under the Stars</text>
+      <line x1="30" y1="122" x2="110" y2="122" stroke="#A5B4FC" strokeWidth="0.3" opacity="0.4" />
+      <circle cx="70" cy="138" r="8" fill="none" stroke="#A5B4FC" strokeWidth="0.3" opacity="0.3" />
+      <circle cx="70" cy="138" r="4" fill="none" stroke="#A5B4FC" strokeWidth="0.2" opacity="0.5" />
+      <circle cx="63" cy="150" r="0.8" fill="#A5B4FC" opacity="0.4" />
+      <circle cx="77" cy="152" r="0.6" fill="#A5B4FC" opacity="0.3" />
+      <circle cx="70" cy="155" r="0.5" fill="#A5B4FC" opacity="0.3" />
+    </svg>,
+  ]
+  return previews[index] || null
+}
+
 function Gallery() {
   return (
     <section id="disenos" className="relative bg-[#F7F2EA] py-24 sm:py-32">
@@ -447,16 +564,7 @@ function Gallery() {
                   }} />
                 </div>
 
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-3">
-                    <div className="w-16 h-16 mx-auto rounded-full border-2 border-[#C9A96E]/20 flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full border border-[#C9A96E]/15" />
-                    </div>
-                    <div className="w-24 h-px mx-auto bg-[#C9A96E]/20" />
-                    <div className="w-10 h-10 mx-auto rounded-sm border border-[#C9A96E]/10 rotate-45" />
-                    <div className="w-16 h-px mx-auto bg-[#C9A96E]/15" />
-                  </div>
-                </div>
+                <DesignPreview index={i} />
 
                 <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-white/90 via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <div className="flex items-center justify-between">
