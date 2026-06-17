@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Heart, ChevronRight, Sparkles, Eye } from 'lucide-react'
+import { ArrowLeft, Heart, ChevronRight, Sparkles, Eye, Star, Leaf } from 'lucide-react'
 import WeddingPreview from '../components/invitaciones/WeddingPreview'
 import { DEFAULT_SECTIONS } from '../components/invitaciones/sections'
 
@@ -10,14 +10,9 @@ const designs = [
     name: 'Clásico Eterno',
     tag: 'Clásico',
     badge: 'Popular',
-    colors: { primary: '#7A1A2E', secondary: '#C4956A', bg: '#FBF6F0', text: '#2C1810', light: '#F5EDE0' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #FBF6F0, #F5EDE0)',
-      border: '2px solid #C4956A',
-      ornament: true,
-      font: 'serif',
-      layout: 'centered',
-    },
+    colors: { primary: '#7A1A2E', secondary: '#C4956A', bg: '#FBF6F0', text: '#2C1810' },
+    layout: 'ornate-frame',
+    font: 'serif',
     description: 'Un diseño atemporal con detalles dorados y tipografía clásica serif. Perfecto para bodas formales y tradicionales.',
   },
   {
@@ -25,14 +20,9 @@ const designs = [
     name: 'Rústico Encanto',
     tag: 'Rústico',
     badge: null,
-    colors: { primary: '#8B6F47', secondary: '#A8C5A0', bg: '#FAF7F2', text: '#3D2C1A', light: '#F0EBE0' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #FAF7F2, #F0EBE0)',
-      border: '2px solid #A8C5A0',
-      ornament: true,
-      font: 'serif',
-      layout: 'centered',
-    },
+    colors: { primary: '#5C3D2E', secondary: '#8BA888', bg: '#F8F5F0', text: '#3D2C1A' },
+    layout: 'botanical-wreath',
+    font: 'serif',
     description: 'Inspirado en la naturaleza, con tonos tierra y verdes suaves. Ideal para bodas al aire libre o en el campo.',
   },
   {
@@ -40,181 +30,356 @@ const designs = [
     name: 'Moderno Minimal',
     tag: 'Moderno',
     badge: 'Nuevo',
-    colors: { primary: '#1A1A2E', secondary: '#C0C0C0', bg: '#FFFFFF', text: '#1A1A2E', light: '#F8F8FA' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #FFFFFF, #F8F8FA)',
-      border: '1px solid #C0C0C0',
-      ornament: false,
-      font: 'sans',
-      layout: 'asymmetric',
-    },
-    description: 'Líneas limpias y tipografía sans-serif para un look contemporáneo. Para parejas que buscan un estilo elegante y sobrio.',
+    colors: { primary: '#1A1A2E', secondary: '#B0B0C0', bg: '#FAFAFC', text: '#1A1A2E' },
+    layout: 'asymmetric-geo',
+    font: 'sans',
+    description: 'Composición asimétrica con formas geométricas. Para parejas contemporáneas que buscan un estilo elegante y sobrio.',
   },
   {
     id: 'romance-vintage',
     name: 'Romance Vintage',
     tag: 'Vintage',
     badge: null,
-    colors: { primary: '#9B5E6B', secondary: '#D4A5B5', bg: '#FDF8FA', text: '#4A2A30', light: '#F8EFF2' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #FDF8FA, #F8EFF2)',
-      border: '2px solid #D4A5B5',
-      ornament: true,
-      font: 'script',
-      layout: 'centered',
-    },
-    description: 'Detalles florales y tipografía cursiva en tonos rosados. Un diseño romántico con aire nostálgico.',
+    colors: { primary: '#8B4A5E', secondary: '#D4A5B5', bg: '#FDF8FA', text: '#4A2A30' },
+    layout: 'floral-corners',
+    font: 'script',
+    description: 'Detalles florales en las esquinas con tipografía cursiva. Un diseño romántico con aire nostálgico.',
   },
   {
     id: 'gold-luxury',
     name: 'Gold Luxury',
     tag: 'Lujo',
     badge: 'Premium',
-    colors: { primary: '#1A1A1A', secondary: '#D4AF37', bg: '#1A1A1A', text: '#FFFFFF', light: '#2A2A2A' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #1A1A1A, #2A2A2A)',
-      border: '2px solid #D4AF37',
-      ornament: true,
-      font: 'serif',
-      layout: 'centered',
-    },
-    description: 'Elegancia en oscuro con detalles dorados Art Deco. Una opción sofisticada para una boda de alta gama.',
+    colors: { primary: '#0A0A0A', secondary: '#D4AF37', bg: '#0A0A0A', text: '#F0EDE8' },
+    layout: 'art-deco-dark',
+    font: 'serif',
+    description: 'Elegancia en oscuro con geometría Art Decó dorada. Una opción sofisticada para una boda de alta gama.',
   },
   {
     id: 'tropical-bliss',
     name: 'Tropical Bliss',
     tag: 'Tropical',
     badge: null,
-    colors: { primary: '#2D6A4F', secondary: '#E8845A', bg: '#F5FBF7', text: '#1B3B2B', light: '#E8F5EE' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #F5FBF7, #E8F5EE)',
-      border: '2px solid #E8845A',
-      ornament: true,
-      font: 'sans',
-      layout: 'centered',
-    },
-    description: 'Verde esmeralda y coral vibrante. Perfecto para bodas en playa o destinos tropicales.',
+    colors: { primary: '#2D6A4F', secondary: '#E8845A', bg: '#F5FBF7', text: '#1B3B2B' },
+    layout: 'split-diagonal',
+    font: 'sans',
+    description: 'Composición dividida con motivos de hojas tropicales. Perfecto para bodas en playa o destinos paradisíacos.',
   },
   {
     id: 'boho-chic',
     name: 'Boho Chic',
     tag: 'Bohemio',
     badge: null,
-    colors: { primary: '#C8664E', secondary: '#E8C8A0', bg: '#FDF8F0', text: '#3D2C1A', light: '#F8F0E0' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #FDF8F0, #F8F0E0)',
-      border: '2px solid #C8664E',
-      ornament: true,
-      font: 'script',
-      layout: 'centered',
-    },
-    description: 'Terracota y crema con elementos naturales. Un estilo bohemio para parejas libres y auténticas.',
+    colors: { primary: '#C8664E', secondary: '#E8C8A0', bg: '#FDF8F0', text: '#3D2C1A' },
+    layout: 'mandala-sun',
+    font: 'script',
+    description: 'Terracota y crema con mandala solar. Un estilo bohemio para parejas libres, auténticas y soñadoras.',
   },
   {
     id: 'celestial',
     name: 'Celestial Dreams',
     tag: 'Moderno',
     badge: 'Nuevo',
-    colors: { primary: '#1B1B3A', secondary: '#A8B5E0', bg: '#0D0D1A', text: '#E8EAF6', light: '#1A1A35' },
-    invitation: {
-      bg: 'linear-gradient(135deg, #0D0D1A, #1A1A35)',
-      border: '1px solid #A8B5E0',
-      ornament: false,
-      font: 'sans',
-      layout: 'asymmetric',
-    },
-    description: 'Noche estrellada con detalles plateados. Un diseño celestial para una boda mágica e inolvidable.',
+    colors: { primary: '#1B1B3A', secondary: '#A8B5E0', bg: '#0D0D1A', text: '#E8EAF6' },
+    layout: 'constellation',
+    font: 'sans',
+    description: 'Noche estrellada con constelaciones plateadas. Un diseño celestial para una boda mágica e inolvidable.',
   },
 ]
 
-function DesignCard({ design, index, onSelect }) {
-  const [imgLoaded, setImgLoaded] = useState(false)
+function getFont(font) {
+  return font === 'script' ? "'Georgia', 'Times New Roman', serif"
+    : font === 'sans' ? "'Inter', system-ui, sans-serif"
+    : "'Georgia', 'Times New Roman', serif"
+}
 
+function DesignCard({ design, index, onSelect }) {
+  const [loaded, setLoaded] = useState(false)
   useEffect(() => {
-    const t = setTimeout(() => setImgLoaded(true), 100 + index * 80)
+    const t = setTimeout(() => setLoaded(true), 100 + index * 80)
     return () => clearTimeout(t)
   }, [index])
 
   const d = design
-  const textColor = d.colors.text
-  const secondaryColor = d.colors.secondary
+  const { primary, secondary, text } = d.colors
 
-  return (
-    <div
-      className={`group cursor-pointer transition-all duration-700 ${
-        imgLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-      onClick={() => onSelect(d)}
-    >
-      <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
-        <div style={{ background: d.invitation.bg }} className="absolute inset-0">
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0v40M0 20h40' stroke='%23000' stroke-width='0.5' fill='none'/%3E%3C/svg%3E")`,
-          }} />
-        </div>
+  const Overlay = () => (
+    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  )
 
-        {d.invitation.ornament && (
-          <div className="absolute top-6 left-6 right-6 flex justify-center opacity-30">
-            <svg viewBox="0 0 120 12" className="h-3" style={{ width: '120px' }}>
-              <path d="M0,6 L40,6" stroke={secondaryColor} strokeWidth="0.5" opacity="0.6" />
-              <circle cx="45" cy="6" r="2" fill="none" stroke={secondaryColor} strokeWidth="0.6" opacity="0.8" />
-              <path d="M50,2 Q55,0 60,2 Q65,4 60,6 Q55,8 50,6 Q45,4 50,2" fill="none" stroke={secondaryColor} strokeWidth="0.6" opacity="0.6" />
-              <circle cx="65" cy="6" r="2" fill="none" stroke={secondaryColor} strokeWidth="0.6" opacity="0.8" />
-              <path d="M70,6 L120,6" stroke={secondaryColor} strokeWidth="0.5" opacity="0.6" />
-            </svg>
+  const HoverBar = () => (
+    <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-10">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-white/90 flex items-center justify-center">
+            <Eye className="w-3 h-3" style={{ color: primary }} />
           </div>
-        )}
-
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
-          <p className="text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: secondaryColor }}>
-            Save the Date
-          </p>
-          <h3 className="text-xl sm:text-2xl font-bold text-center leading-tight mb-2" style={{
-            color: textColor,
-            fontFamily: d.invitation.font === 'script' ? "'Georgia', 'Times New Roman', serif" :
-                        d.invitation.font === 'sans' ? "'Inter', system-ui, sans-serif" : "'Georgia', 'Times New Roman', serif",
-            fontStyle: d.invitation.font === 'script' ? 'italic' : 'normal',
-          }}>
-            {d.id === 'gold-luxury' || d.id === 'celestial' ? (
-              <span className="text-white">Nuestra Boda</span>
-            ) : 'Nuestra Boda'}
-          </h3>
-          <div className="w-10 h-px my-3" style={{ backgroundColor: secondaryColor, opacity: 0.4 }} />
-          <p className="text-[10px] tracking-[0.15em]" style={{ color: textColor, opacity: 0.7 }}>
-            15 · Junio · 2026
-          </p>
+          <span className="text-white text-xs font-medium">Ver diseño</span>
         </div>
+      </div>
+    </div>
+  )
 
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  const Badge = () => d.badge ? (
+    <div className="absolute top-4 right-4 z-10">
+      <span className="text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm"
+        style={{ backgroundColor: primary, color: d.id === 'gold-luxury' || d.id === 'celestial' ? secondary : '#fff' }}
+      >
+        {d.badge}
+      </span>
+    </div>
+  ) : null
 
-        <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-white/90 flex items-center justify-center">
-                <Eye className="w-3 h-3" style={{ color: d.colors.primary }} />
-              </div>
-              <span className="text-white text-xs font-medium">Ver diseño</span>
+  const cardClass = `group cursor-pointer transition-all duration-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`
+
+  const renderCard = () => {
+    switch (d.layout) {
+      case 'ornate-frame':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div className="absolute inset-3 rounded-[1.5rem] border-2" style={{ borderColor: secondary, opacity: 0.5 }} />
+            <div className="absolute inset-4 rounded-[1.4rem] border" style={{ borderColor: secondary, opacity: 0.2 }} />
+            <div style={{ background: `linear-gradient(135deg, ${d.colors.bg}, ${d.colors.bg}DD)` }} className="absolute inset-0" />
+            <div className="absolute top-5 left-5 right-5 flex justify-center opacity-30">
+              <svg viewBox="0 0 120 12" className="h-3" style={{ width: '100px' }}>
+                <path d="M0,6 L35,6" stroke={secondary} strokeWidth="0.5" opacity="0.6" />
+                <circle cx="40" cy="6" r="2" fill="none" stroke={secondary} strokeWidth="0.6" opacity="0.8" />
+                <path d="M45,2 Q50,0 55,2 Q60,4 55,6 Q50,8 45,6 Q40,4 45,2" fill="none" stroke={secondary} strokeWidth="0.6" opacity="0.6" />
+                <circle cx="60" cy="6" r="2" fill="none" stroke={secondary} strokeWidth="0.6" opacity="0.8" />
+                <path d="M65,6 L120,6" stroke={secondary} strokeWidth="0.5" opacity="0.6" />
+              </svg>
             </div>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-10">
+              <p className="text-[10px] tracking-[0.3em] uppercase mb-3" style={{ color: secondary }}>Save the Date</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-center leading-tight mb-2" style={{ color: text, fontFamily: getFont(d.font) }}>Nuestra Boda</h3>
+              <div className="w-10 h-px my-3" style={{ backgroundColor: secondary, opacity: 0.4 }} />
+              <p className="text-[10px] tracking-[0.15em]" style={{ color: text, opacity: 0.7 }}>15 · Junio · 2026</p>
+            </div>
+            <div className="absolute bottom-5 left-5 right-5 flex justify-center opacity-20">
+              <Heart className="w-4 h-4" style={{ color: secondary }} />
+            </div>
+            <Overlay /><HoverBar /><Badge />
+          </div>
+        )
+
+      case 'botanical-wreath':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div style={{ background: `linear-gradient(180deg, ${d.colors.bg}, #EDE8DF)` }} className="absolute inset-0" />
+            <div className="absolute inset-4 flex items-center justify-center">
+              <svg viewBox="0 0 200 260" className="w-full h-full opacity-30">
+                <path d="M100,10 C60,10 20,40 20,80 C20,130 60,160 100,250 C140,160 180,130 180,80 C180,40 140,10 100,10Z" fill="none" stroke={secondary} strokeWidth="1.5" opacity="0.7" />
+                <path d="M100,20 C65,20 30,45 30,80 C30,125 65,150 100,230 C135,150 170,125 170,80 C170,45 135,20 100,20Z" fill="none" stroke={secondary} strokeWidth="0.8" opacity="0.4" />
+                <path d="M45,65 Q70,55 100,65 Q130,55 155,65" fill="none" stroke={primary} strokeWidth="1" opacity="0.4" />
+                <path d="M45,95 Q70,105 100,95 Q130,105 155,95" fill="none" stroke={primary} strokeWidth="1" opacity="0.4" />
+                {[1,2,3,4,5,6,7,8].map(i => {
+                  const a = i * Math.PI / 4 - Math.PI/2
+                  const r = 70 + Math.sin(i*2.5)*10
+                  const cx = 100 + Math.cos(a)*r
+                  const cy = 130 + Math.sin(a)*r
+                  return <circle key={i} cx={cx} cy={cy} r="22" fill="none" stroke={secondary} strokeWidth="0.5" opacity="0.3" />
+                })}
+              </svg>
+            </div>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
+              <p className="text-[10px] tracking-[0.3em] uppercase mb-2" style={{ color: secondary }}>Save the Date</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-center leading-tight" style={{ color: text, fontFamily: getFont(d.font) }}>Nuestra Boda</h3>
+              <div className="w-8 h-px my-3" style={{ backgroundColor: secondary, opacity: 0.5 }} />
+              <p className="text-[10px] tracking-[0.15em]" style={{ color: text, opacity: 0.7 }}>15 · Junio · 2026</p>
+            </div>
+            <Overlay /><HoverBar /><Badge />
+          </div>
+        )
+
+      case 'asymmetric-geo':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div style={{ background: `linear-gradient(135deg, ${d.colors.bg}, #F0F0F5)` }} className="absolute inset-0" />
+            <div className="absolute -top-16 -left-16 w-40 h-40 rounded-full opacity-[0.06]" style={{ backgroundColor: primary }} />
+            <div className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full opacity-[0.04]" style={{ backgroundColor: primary }} />
+            <div className="absolute top-8 right-6">
+              <div className="w-12 h-px" style={{ backgroundColor: secondary, opacity: 0.3 }} />
+            </div>
+            <div className="absolute inset-0 flex flex-col items-end justify-center px-8 pr-12">
+              <p className="text-[9px] tracking-[0.35em] uppercase mb-2" style={{ color: secondary, opacity: 0.7 }}>Save the Date</p>
+              <h3 className="text-2xl font-bold text-right leading-tight" style={{ color: text, fontFamily: getFont(d.font) }}>Nuestra<br />Boda</h3>
+              <div className="w-8 h-px my-2 ml-auto" style={{ backgroundColor: primary, opacity: 0.2 }} />
+              <p className="text-[9px] tracking-[0.15em] text-right" style={{ color: text, opacity: 0.6 }}>15 · Junio · 2026</p>
+            </div>
+            <div className="absolute bottom-8 left-6">
+              <div className="w-2 h-2" style={{ backgroundColor: secondary, opacity: 0.3 }} />
+            </div>
+            <Overlay /><HoverBar /><Badge />
+          </div>
+        )
+
+      case 'floral-corners':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div style={{ background: `linear-gradient(135deg, ${d.colors.bg}, #F5E8EC)` }} className="absolute inset-0" />
+            <svg viewBox="0 0 300 400" className="absolute inset-0 w-full h-full opacity-25">
+              <path d="M20,20 Q50,0 80,20 Q100,50 80,80 Q50,100 20,80 Q0,50 20,20Z" fill={secondary} />
+              <path d="M280,20 Q250,0 220,20 Q200,50 220,80 Q250,100 280,80 Q300,50 280,20Z" fill={secondary} />
+              <path d="M20,380 Q50,400 80,380 Q100,350 80,320 Q50,300 20,320 Q0,350 20,380Z" fill={secondary} />
+              <path d="M280,380 Q250,400 220,380 Q200,350 220,320 Q250,300 280,320 Q300,350 280,380Z" fill={secondary} />
+              {[20,70,120,170,220,270].map(x =>
+                [20,80,140,200,260,320,380].map(y => (
+                  <circle key={`${x}-${y}`} cx={x} cy={y} r="2" fill={secondary} opacity="0.3" />
+                ))
+              )}
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
+              <p className="text-[10px] tracking-[0.3em] uppercase mb-2" style={{ color: secondary, opacity: 0.8 }}>Save the Date</p>
+              <h3 className="text-xl sm:text-2xl text-center leading-tight italic" style={{ color: text, fontFamily: getFont(d.font) }}>Nuestra Boda</h3>
+              <div className="w-12 h-px my-3" style={{ backgroundColor: secondary, opacity: 0.3 }} />
+              <p className="text-[10px] tracking-[0.15em]" style={{ color: text, opacity: 0.6 }}>15 · Junio · 2026</p>
+            </div>
+            <Overlay /><HoverBar /><Badge />
+          </div>
+        )
+
+      case 'art-deco-dark':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div style={{ background: `linear-gradient(180deg, ${primary}, #000)` }} className="absolute inset-0" />
+            <div className="absolute inset-0 opacity-10" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 50 L50 100 L0 50Z' fill='none' stroke='${encodeURIComponent(secondary)}' stroke-width='0.5'/%3E%3C/svg%3E")`,
+              backgroundSize: '50px 50px',
+            }} />
+            <svg viewBox="0 0 300 400" className="absolute inset-0 w-full h-full opacity-15">
+              <path d="M0,0 L80,0 L150,40 L220,0 L300,0 L300,60 L230,100 L300,140 L300,200 L220,180 L150,220 L80,180 L0,200 L0,140 L70,100 L0,60Z" fill={secondary} opacity="0.3" />
+              <path d="M0,400 L80,400 L150,360 L220,400 L300,400 L300,340 L230,300 L300,260 L300,200 L220,220 L150,180 L80,220 L0,200 L0,260 L70,300 L0,340Z" fill={secondary} opacity="0.3" />
+              <line x1="150" y1="40" x2="150" y2="360" stroke={secondary} strokeWidth="0.5" opacity="0.3" />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-10">
+              <div className="w-16 h-px mb-4" style={{ backgroundColor: secondary, opacity: 0.5 }} />
+              <p className="text-[9px] tracking-[0.4em] uppercase mb-3" style={{ color: secondary, opacity: 0.8 }}>Save the Date</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-center leading-tight text-white" style={{ fontFamily: getFont(d.font) }}>
+                Nuestra<br />Boda
+              </h3>
+              <div className="w-10 h-px my-3" style={{ backgroundColor: secondary, opacity: 0.4 }} />
+              <p className="text-[10px] tracking-[0.15em]" style={{ color: secondary, opacity: 0.7 }}>15 · Junio · 2026</p>
+              <div className="w-16 h-px mt-4" style={{ backgroundColor: secondary, opacity: 0.5 }} />
+            </div>
+            <Overlay /><HoverBar />
             {d.badge && (
-              <span className="text-[9px] font-semibold uppercase tracking-wider text-white bg-white/20 backdrop-blur px-2.5 py-1 rounded-full">
-                {d.badge}
-              </span>
+              <div className="absolute top-4 right-4 z-10">
+                <span className="text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm"
+                  style={{ backgroundColor: secondary, color: primary }}>{d.badge}</span>
+              </div>
             )}
           </div>
-        </div>
+        )
 
-        {d.badge && (
-          <div className="absolute top-4 right-4">
-            <span className="text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm" style={{
-              backgroundColor: d.colors.primary,
-              color: d.id === 'gold-luxury' || d.id === 'celestial' ? secondaryColor : '#fff',
-            }}>
-              {d.badge}
-            </span>
+      case 'split-diagonal':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${primary} 0%, ${primary} 50%, ${secondary} 50%, ${secondary} 100%)` }} />
+            <div className="absolute inset-0 opacity-[0.06]" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0 L30 15 L15 30 L0 15Z' fill='white'/%3E%3C/svg%3E")`,
+              backgroundSize: '30px 30px',
+            }} />
+            <svg viewBox="0 0 300 400" className="absolute inset-0 w-full h-full opacity-10">
+              {[0,1,2,3,4].map(i => {
+                const y = 50 + i * 75
+                return <path key={i} d={`M0,${y} Q75,${y-15} 150,${y} Q225,${y+15} 300,${y}`} fill="none" stroke="#fff" strokeWidth="1.5" />
+              })}
+            </svg>
+            <div className="absolute top-6 left-6">
+              <Leaf className="w-5 h-5 text-white/30" />
+            </div>
+            <div className="absolute bottom-6 right-6">
+              <Leaf className="w-5 h-5 text-white/30" />
+            </div>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
+              <p className="text-[9px] tracking-[0.3em] uppercase mb-2 text-white/70">Save the Date</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-center leading-tight text-white" style={{ fontFamily: getFont(d.font), textShadow: '0 1px 3px rgba(0,0,0,0.2)' }}>
+                Nuestra Boda
+              </h3>
+              <div className="w-8 h-px my-3 bg-white/30" />
+              <p className="text-[10px] tracking-[0.15em] text-white/70">15 · Junio · 2026</p>
+            </div>
+            <Overlay /><HoverBar /><Badge />
           </div>
-        )}
-      </div>
+        )
 
+      case 'mandala-sun':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div style={{ background: `linear-gradient(180deg, ${d.colors.bg}, #F0E8DA)` }} className="absolute inset-0" />
+            <div className="absolute top-0 left-0 right-0 h-2/5 flex items-start justify-center pt-4">
+              <svg viewBox="0 0 120 80" className="w-full opacity-20" preserveAspectRatio="xMidYMin meet">
+                <circle cx="60" cy="30" r="15" fill="none" stroke={secondary} strokeWidth="1" />
+                <circle cx="60" cy="30" r="20" fill="none" stroke={secondary} strokeWidth="0.5" opacity="0.5" />
+                {[0,1,2,3,4,5,6,7].map(i => {
+                  const a = i * Math.PI / 4
+                  return <line key={i} x1={60 + Math.cos(a)*22} y1={30 + Math.sin(a)*22} x2={60 + Math.cos(a)*50} y2={30 + Math.sin(a)*50} stroke={secondary} strokeWidth="0.8" opacity="0.4" />
+                })}
+                {[0,1,2,3,4,5,6,7,8,9,10,11].map(i => {
+                  const a = i * Math.PI / 6
+                  return <line key={`r${i}`} x1={60 + Math.cos(a)*17} y1={30 + Math.sin(a)*17} x2={60 + Math.cos(a)*28} y2={30 + Math.sin(a)*28} stroke={primary} strokeWidth="0.5" opacity="0.3" />
+                })}
+              </svg>
+            </div>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-8 pt-6">
+              <p className="text-[10px] tracking-[0.3em] uppercase mb-2" style={{ color: secondary, opacity: 0.8 }}>Save the Date</p>
+              <h3 className="text-xl sm:text-2xl text-center leading-tight italic" style={{ color: text, fontFamily: getFont(d.font) }}>Nuestra Boda</h3>
+              <div className="w-10 h-px my-3" style={{ backgroundColor: secondary, opacity: 0.4 }} />
+              <p className="text-[10px] tracking-[0.15em]" style={{ color: text, opacity: 0.7 }}>15 · Junio · 2026</p>
+            </div>
+            <div className="absolute bottom-4 left-4 right-4 flex justify-center gap-2 opacity-15">
+              {[1,2,3].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: secondary }} />)}
+            </div>
+            <Overlay /><HoverBar /><Badge />
+          </div>
+        )
+
+      case 'constellation':
+        return (
+          <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white shadow-lg shadow-black/5 group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700 group-hover:-translate-y-1">
+            <div style={{ background: `linear-gradient(180deg, ${primary}, #0A0A20)` }} className="absolute inset-0" />
+            <svg viewBox="0 0 300 400" className="absolute inset-0 w-full h-full opacity-30">
+              {[[50,40,80,70],[120,60,150,90],[200,50,170,80],[50,150,90,130],[120,140,160,160],[200,150,180,120],
+                [60,220,100,200],[140,210,120,240],[220,220,250,200],[80,280,110,300],[150,290,180,270],[230,300,200,280]].map(([x1,y1,x2,y2], i) => (
+                <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={secondary} strokeWidth="0.5" opacity="0.5" />
+              ))}
+              {[[50,40],[80,70],[120,60],[150,90],[200,50],[170,80],[50,150],[90,130],[120,140],[160,160],[200,150],[180,120],
+                [60,220],[100,200],[140,210],[120,240],[220,220],[250,200],[80,280],[110,300],[150,290],[180,270],[230,300],[200,280]].map(([cx,cy], i) => (
+                <circle key={i} cx={cx} cy={cy} r="2.5" fill={secondary} opacity="0.8" />
+              ))}
+              {[[50,40],[120,60],[200,50],[50,150],[120,140],[200,150],[60,220],[140,210],[220,220],[80,280],[150,290],[230,300]].map(([cx,cy], i) => (
+                <circle key={`g${i}`} cx={cx} cy={cy} r="1" fill="#fff" opacity="0.9" />
+              ))}
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-10">
+              <div className="mb-2 flex gap-1 opacity-50">
+                {[1,2,3].map(i => <Star key={i} className="w-2.5 h-2.5" style={{ color: secondary }} />)}
+              </div>
+              <p className="text-[9px] tracking-[0.4em] uppercase mb-2" style={{ color: secondary, opacity: 0.7 }}>Save the Date</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-center leading-tight text-white" style={{ fontFamily: getFont(d.font), textShadow: '0 0 20px rgba(168,181,224,0.3)' }}>
+                Nuestra Boda
+              </h3>
+              <div className="w-8 h-px my-3" style={{ backgroundColor: secondary, opacity: 0.3 }} />
+              <p className="text-[10px] tracking-[0.15em]" style={{ color: secondary, opacity: 0.6 }}>15 · Junio · 2026</p>
+            </div>
+            <Overlay /><HoverBar />
+            {d.badge && (
+              <div className="absolute top-4 right-4 z-10">
+                <span className="text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm"
+                  style={{ backgroundColor: secondary, color: primary }}>{d.badge}</span>
+              </div>
+            )}
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  return (
+    <div className={cardClass} onClick={() => onSelect(d)}>
+      {renderCard()}
       <div className="mt-4 px-1">
         <h3 className="font-display font-bold text-base" style={{ color: d.colors.text }}>{d.name}</h3>
         <p className="text-xs mt-0.5" style={{ color: d.colors.secondary }}>{d.tag}</p>
@@ -311,10 +476,7 @@ export default function InvitacionesDisenos() {
             <Link
               to="/invitaciones/crear"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all"
-              style={{
-                backgroundColor: '#7A1A2E',
-                color: '#fff',
-              }}
+              style={{ backgroundColor: '#7A1A2E', color: '#fff' }}
             >
               <Sparkles className="w-3.5 h-3.5" />
               Crear invitación
@@ -344,10 +506,7 @@ export default function InvitacionesDisenos() {
           <Link
             to="/invitaciones/crear"
             className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-semibold tracking-wider uppercase transition-all duration-500 hover:shadow-2xl hover:-translate-y-0.5"
-            style={{
-              backgroundColor: '#7A1A2E',
-              color: '#fff',
-            }}
+            style={{ backgroundColor: '#7A1A2E', color: '#fff' }}
           >
             <Sparkles className="w-4 h-4" />
             Crear mi invitación personalizada
