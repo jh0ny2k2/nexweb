@@ -293,8 +293,6 @@ function Hero() {
         backgroundSize: '60px 60px'
       }} />
 
-      <InvitationScene3D />
-
       <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-32 sm:py-40">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="text-center lg:text-left space-y-8">
@@ -353,10 +351,11 @@ function Hero() {
           </div>
 
           <div
-            className="hidden lg:flex items-center justify-center opacity-0 animate-fade-up"
-            style={{ animationDelay: '600ms', animationFillMode: 'forwards' }}
+            className="hidden lg:flex items-center justify-center"
           >
-            <Rings />
+            <div className="w-72 h-80">
+              <InvitationScene3D />
+            </div>
           </div>
         </div>
       </div>
