@@ -5,6 +5,8 @@ import ScrollToTop from './components/common/ScrollToTop'
 import { DashboardProvider } from './context/DashboardContext'
 import Home from './pages/Home'
 import Invitaciones from './pages/Invitaciones'
+import InvitacionesDisenos from './pages/InvitacionesDisenos'
+import InvitacionesCrear from './pages/InvitacionesCrear'
 import Services from './pages/Services'
 import Templates from './pages/Templates'
 import Pricing from './pages/Pricing'
@@ -38,6 +40,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
           </Route>
           <Route path="/invitaciones" element={<Invitaciones />} />
+          <Route path="/invitaciones/disenos" element={<InvitacionesDisenos />} />
+          <Route path="/invitaciones/crear" element={<InvitacionesCrear />} />
           <Route path="/panel" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="clientes" element={<Clients />} />

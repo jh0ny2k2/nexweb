@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Heart, Sparkles, Share2, Palette,
   CheckCircle, ArrowRight, Star,
@@ -125,14 +126,13 @@ function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="#contacto"
-              onClick={(e) => handleNavClick(e, '#contacto')}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 bg-[#C4956A] hover:bg-[#B8864E] text-white font-body font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-500 hover:shadow-xl hover:shadow-[#C4956A]/30 hover:-translate-y-0.5"
-            >
-              Crear invitación
-              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </a>
+              <Link
+                to="/invitaciones/crear"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 bg-[#C4956A] hover:bg-[#B8864E] text-white font-body font-semibold text-xs tracking-wider uppercase rounded-full transition-all duration-500 hover:shadow-xl hover:shadow-[#C4956A]/30 hover:-translate-y-0.5"
+              >
+                Crear invitación
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </Link>
           </div>
 
           <button
@@ -162,13 +162,12 @@ function Navbar() {
               </a>
             ))}
             <hr className="my-2 border-[#DFC5A8]/20 mx-2" />
-            <a
-              href="#contacto"
-              onClick={(e) => handleNavClick(e, '#contacto')}
+            <Link
+              to="/invitaciones/crear"
               className="block px-4 py-3 rounded-xl text-sm font-semibold text-white bg-[#C4956A] hover:bg-[#B8864E] mx-2 mt-2 text-center transition-all"
             >
               Crear invitación
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -325,27 +324,19 @@ function Hero() {
               className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start opacity-0 animate-fade-up"
               style={{ animationDelay: '800ms', animationFillMode: 'forwards' }}
             >
-              <a
-                href="#contacto"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.querySelector('#contacto')?.scrollIntoView({ behavior: 'smooth' })
-                }}
+              <Link
+                to="/invitaciones/crear"
                 className="group inline-flex items-center gap-2.5 px-8 py-4 bg-[#C4956A] hover:bg-[#B8864E] text-white font-body font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-500 hover:shadow-2xl hover:shadow-[#C4956A]/30 hover:-translate-y-0.5"
               >
                 Crear invitación
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-              <a
-                href="#disenos"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.querySelector('#disenos')?.scrollIntoView({ behavior: 'smooth' })
-                }}
+              </Link>
+              <Link
+                to="/invitaciones/disenos"
                 className="group inline-flex items-center gap-2 px-8 py-4 text-[#E8D5D0] hover:text-white font-body text-sm tracking-wider uppercase rounded-full border border-[#E8D5D0]/30 hover:border-[#E8D5D0]/60 transition-all duration-500"
               >
                 Ver diseños
-              </a>
+              </Link>
             </div>
 
             <div
@@ -519,13 +510,13 @@ function Gallery() {
         </div>
 
         <div className="text-center mt-12 scroll-reveal">
-          <a
-            href="#"
+          <Link
+            to="/invitaciones/disenos"
             className="inline-flex items-center gap-2.5 px-8 py-4 bg-[#7A1A2E] hover:bg-[#5C1422] text-white font-body font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-500 hover:shadow-2xl hover:shadow-[#7A1A2E]/30"
           >
             Ver todas las plantillas
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -692,19 +683,19 @@ function FinalCTA() {
           className="flex flex-col sm:flex-row items-center gap-4 justify-center opacity-0 animate-fade-up"
           style={{ animationDelay: '600ms', animationFillMode: 'forwards' }}
         >
-          <a
-            href="#"
+          <Link
+            to="/invitaciones/crear"
             className="group inline-flex items-center gap-2.5 px-10 py-5 bg-[#C4956A] hover:bg-[#B8864E] text-white font-body font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-500 hover:shadow-2xl hover:shadow-[#C4956A]/30 hover:-translate-y-0.5"
           >
             Crear mi invitación
             <Heart className="w-4 h-4 transition-transform duration-300 group-hover:scale-125" />
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/contacto"
             className="inline-flex items-center gap-2 px-10 py-5 text-[#E8D5D0] hover:text-white font-body text-sm tracking-wider uppercase rounded-full border border-[#E8D5D0]/30 hover:border-[#E8D5D0]/60 transition-all duration-500"
           >
             Hablar con nosotros
-          </a>
+          </Link>
         </div>
 
         <div
