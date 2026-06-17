@@ -35,13 +35,41 @@ export default function InvitacionesCrear() {
     registry: '',
     musica: 'Perfect — Ed Sheeran',
     hashtag: '',
+    timeline: [{ date: 'Enero 2020', title: 'Primer Encuentro', desc: 'Nos conocimos en casa de amigos.' }],
+    schedule: [{ time: '16:00', title: 'Ceremonia', desc: 'Iglesia San Miguel' }],
+    hotels: [{ name: 'Hotel Boutique', address: 'Calle Principal 123', discount: '10% descuento' }],
+    weddingParty: [{ name: 'María & Juan', role: 'Padrinos de Velación' }],
+    faqs: [{ q: '¿Puedo llevar acompañante?', a: 'Sí, indícalo al confirmar.' }],
+    galleryUrls: [],
   })
   const [selectedStyle, setSelectedStyle] = useState(initialDesign)
   const [sections, setSections] = useState([...DEFAULT_SECTIONS])
+  const [editingSection, setEditingSection] = useState(null)
   const [showCopied, setShowCopied] = useState(false)
   const [showMobilePreview, setShowMobilePreview] = useState(false)
 
   const update = (key, value) => setData((prev) => ({ ...prev, [key]: value }))
+
+  const updateArrayItem = (key, index, field, value) => {
+    setData((prev) => {
+      const arr = [...(prev[key] || [])]
+      if (!arr[index]) return prev
+      arr[index] = { ...arr[index], [field]: value }
+      return { ...prev, [key]: arr }
+    })
+  }
+
+  const addArrayItem = (key, template) => {
+    setData((prev) => ({ ...prev, [key]: [...(prev[key] || []), { ...template }] }))
+  }
+
+  const removeArrayItem = (key, index) => {
+    setData((prev) => {
+      const arr = [...(prev[key] || [])]
+      arr.splice(index, 1)
+      return { ...prev, [key]: arr }
+    })
+  }
 
   const toggleSection = (id) => {
     setSections((prev) =>
@@ -219,55 +247,76 @@ export default function InvitacionesCrear() {
                   <Plus className="w-4 h-4" />
                   Secciones de la página
                 </h3>
-                <p className="text-[10px] text-[#8C7C7A] mb-4">Activa, desactiva y ordena las secciones</p>
+                <p className="text-[10px] text-[#8C7C7A] mb-4">Activa, ordena y edita el contenido de cada sección</p>
                 <div className="space-y-1">
                   {Object.entries(SECTION_MAP).map(([id, sec]) => {
                     const active = sections.includes(id)
+                    const expanded = editingSection === id
                     const Icon = sec.icon
                     return (
-                      <div
-                        key={id}
-                        className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all"
-                        style={{ backgroundColor: active ? `${sec.name === 'Portada' ? '#7A1A2E' : '#7A1A2E'}08` : 'transparent' }}
-                      >
-                        <div className="flex items-center gap-1.5">
+                      <div key={id}>
+                        <div
+                          className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all cursor-pointer"
+                          style={{ backgroundColor: active ? '#7A1A2E08' : 'transparent' }}
+                          onClick={() => active && setEditingSection(expanded ? null : id)}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); moveSection(id, -1) }}
+                              className="w-4 h-4 flex items-center justify-center rounded hover:bg-black/5 transition-all"
+                              disabled={!active}
+                              style={{ opacity: active ? 1 : 0.2, cursor: active ? 'pointer' : 'not-allowed' }}
+                            >
+                              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#8C7C7A" strokeWidth="1.5"><path d="M4 7V1M4 1L1 4M4 1L7 4"/></svg>
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); moveSection(id, 1) }}
+                              className="w-4 h-4 flex items-center justify-center rounded hover:bg-black/5 transition-all"
+                              disabled={!active}
+                              style={{ opacity: active ? 1 : 0.2, cursor: active ? 'pointer' : 'not-allowed' }}
+                            >
+                              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#8C7C7A" strokeWidth="1.5"><path d="M4 1v6M4 7l3-3M4 7L1 4"/></svg>
+                            </button>
+                          </div>
+
                           <button
-                            onClick={() => moveSection(id, -1)}
-                            className="w-4 h-4 flex items-center justify-center rounded hover:bg-black/5 transition-all"
-                            disabled={!active}
-                            style={{ opacity: active ? 1 : 0.2, cursor: active ? 'pointer' : 'not-allowed' }}
+                            onClick={(e) => { e.stopPropagation(); toggleSection(id) }}
+                            className="flex items-center gap-2"
                           >
-                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#8C7C7A" strokeWidth="1.5"><path d="M4 7V1M4 1L1 4M4 1L7 4"/></svg>
+                            <div
+                              className="w-5 h-5 rounded-md flex items-center justify-center transition-all"
+                              style={{ backgroundColor: active ? '#7A1A2E' : '#DFC5A8' }}
+                            >
+                              {active && <Check className="w-3 h-3 text-white" />}
+                            </div>
                           </button>
+
                           <button
-                            onClick={() => moveSection(id, 1)}
-                            className="w-4 h-4 flex items-center justify-center rounded hover:bg-black/5 transition-all"
-                            disabled={!active}
-                            style={{ opacity: active ? 1 : 0.2, cursor: active ? 'pointer' : 'not-allowed' }}
+                            onClick={() => { if (active) setEditingSection(expanded ? null : id) }}
+                            className="flex items-center gap-2 flex-1 text-left"
                           >
-                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#8C7C7A" strokeWidth="1.5"><path d="M4 1v6M4 7l3-3M4 7L1 4"/></svg>
+                            <Icon className="w-3.5 h-3.5" style={{ color: active ? '#7A1A2E' : '#8C7C7A' }} />
+                            <span className="text-xs font-medium" style={{ color: active ? '#2C1810' : '#8C7C7A' }}>
+                              {sec.name}
+                            </span>
                           </button>
+
+                          <span className="text-[9px] text-[#8C7C7A]">#{sections.indexOf(id) + 1 || '-'}</span>
                         </div>
 
-                        <button
-                          onClick={() => toggleSection(id)}
-                          className="flex items-center gap-2 flex-1 text-left"
-                        >
-                          <div
-                            className="w-5 h-5 rounded-md flex items-center justify-center transition-all"
-                            style={{
-                              backgroundColor: active ? '#7A1A2E' : '#DFC5A8',
-                            }}
-                          >
-                            {active && <Check className="w-3 h-3 text-white" />}
+                        {active && expanded && (
+                          <div className="px-3 pb-3 pt-2 space-y-3">
+                            <SectionEditFields
+                              sectionId={id}
+                              data={data}
+                              update={update}
+                              updateArrayItem={updateArrayItem}
+                              addArrayItem={addArrayItem}
+                              removeArrayItem={removeArrayItem}
+                              inputClass={inputClass}
+                            />
                           </div>
-                          <Icon className="w-3.5 h-3.5" style={{ color: active ? '#7A1A2E' : '#8C7C7A' }} />
-                          <span className="text-xs font-medium" style={{ color: active ? '#2C1810' : '#8C7C7A' }}>
-                            {sec.name}
-                          </span>
-                        </button>
-
-                        <span className="text-[9px] text-[#8C7C7A]">#{sections.indexOf(id) + 1 || '-'}</span>
+                        )}
                       </div>
                     )
                   })}
@@ -326,7 +375,20 @@ export default function InvitacionesCrear() {
   )
 }
 
-function Input({ label, value, onChange, placeholder }) {
+function Input({ label, value, onChange, placeholder, isTextarea }) {
+  if (isTextarea) {
+    return (
+      <div>
+        <label className="block text-xs font-medium mb-1.5 text-[#8C7C7A]">{label}</label>
+        <textarea
+          value={value} onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder} rows={2}
+          className="w-full px-4 py-2.5 rounded-xl border text-sm transition-all outline-none focus:ring-2 resize-none"
+          style={{ borderColor: '#DFC5A8', backgroundColor: '#FBF6F0', color: '#2C1810' }}
+        />
+      </div>
+    )
+  }
   return (
     <div>
       <label className="block text-xs font-medium mb-1.5 text-[#8C7C7A]">{label}</label>
@@ -339,4 +401,206 @@ function Input({ label, value, onChange, placeholder }) {
       />
     </div>
   )
+}
+
+function ArrayEditor({ items, keyLabel, keyField, fields, onUpdate, onAdd, onRemove, inputClass }) {
+  return (
+    <div className="space-y-2">
+      {items.map((item, i) => (
+        <div key={i} className="p-2 rounded-lg" style={{ backgroundColor: '#F3EDE5' }}>
+          <div className="grid grid-cols-1 gap-1.5">
+            {fields.map((f) => (
+              <div key={f.key}>
+                <label className="block text-[9px] font-medium mb-0.5 text-[#8C7C7A] uppercase tracking-wider">{f.label}</label>
+                {f.isTextarea ? (
+                  <textarea
+                    value={item[f.key] || ''} onChange={(e) => onUpdate(i, f.key, e.target.value)}
+                    rows={1} placeholder={f.placeholder}
+                    className={inputClass} style={{ borderColor: '#DFC5A8', backgroundColor: '#FBF6F0', color: '#2C1810', fontSize: '11px' }}
+                  />
+                ) : (
+                  <input
+                    type="text" value={item[f.key] || ''} onChange={(e) => onUpdate(i, f.key, e.target.value)}
+                    placeholder={f.placeholder}
+                    className={inputClass} style={{ borderColor: '#DFC5A8', backgroundColor: '#FBF6F0', color: '#2C1810', fontSize: '11px' }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          {items.length > 1 && (
+            <button onClick={() => onRemove(i)} className="mt-1 text-[9px] font-medium text-red-400 hover:text-red-500" children="Eliminar" />
+          )}
+        </div>
+      ))}
+      <button
+        onClick={() => onAdd(Object.fromEntries(fields.map((f) => [f.key, ''])))} className="text-[10px] font-medium transition-colors"
+        style={{ color: '#7A1A2E' }}
+      >
+        + Agregar {keyLabel}
+      </button>
+    </div>
+  )
+}
+
+function SectionEditFields({ sectionId, data, update, updateArrayItem, addArrayItem, removeArrayItem, inputClass }) {
+  switch (sectionId) {
+    case 'hero': return <Input label="Mensaje de bienvenida (opcional)" value={''} onChange={() => {}} placeholder="Save the Date" isTextarea />;
+
+    case 'story': return (
+      <Input label="Historia de amor" value={data.historia} onChange={(v) => update('historia', v)} placeholder="Cuéntanos cómo se conocieron..." isTextarea />
+    )
+
+    case 'timeline': return (
+      <div>
+        <p className="text-[9px] font-medium mb-2 text-[#8C7C7A] uppercase tracking-wider">Eventos importantes</p>
+        <ArrayEditor
+          items={data.timeline || []} keyLabel="evento" keyField="timeline"
+          fields={[
+            { key: 'date', label: 'Fecha', placeholder: 'Enero 2020' },
+            { key: 'title', label: 'Título', placeholder: 'Primer Encuentro' },
+            { key: 'desc', label: 'Descripción', placeholder: '¿Qué pasó?', isTextarea: true },
+          ]}
+          onUpdate={(i, f, v) => updateArrayItem('timeline', i, f, v)}
+          onAdd={() => addArrayItem('timeline', { date: '', title: '', desc: '' })}
+          onRemove={(i) => removeArrayItem('timeline', i)}
+          inputClass={inputClass}
+        />
+      </div>
+    )
+
+    case 'events': return (
+      <div className="space-y-2">
+        <div className="text-[9px] font-medium text-[#8C7C7A] uppercase tracking-wider">Ceremonia</div>
+        <div className="grid grid-cols-2 gap-2">
+          <Input label="Hora" value={data.hora_ceremonia} onChange={(v) => update('hora_ceremonia', v)} placeholder="17:00 h" />
+          <Input label="Lugar" value={data.lugar_ceremonia} onChange={(v) => update('lugar_ceremonia', v)} placeholder="Iglesia San Miguel" />
+        </div>
+        <div className="text-[9px] font-medium text-[#8C7C7A] uppercase tracking-wider pt-1">Recepción</div>
+        <div className="grid grid-cols-2 gap-2">
+          <Input label="Hora" value={data.hora_recepcion} onChange={(v) => update('hora_recepcion', v)} placeholder="19:30 h" />
+          <Input label="Lugar" value={data.lugar_recepcion} onChange={(v) => update('lugar_recepcion', v)} placeholder="Hacienda Los Olivos" />
+        </div>
+      </div>
+    )
+
+    case 'schedule': return (
+      <div>
+        <p className="text-[9px] font-medium mb-2 text-[#8C7C7A] uppercase tracking-wider">Horarios del día</p>
+        <ArrayEditor
+          items={data.schedule || []} keyLabel="horario" keyField="schedule"
+          fields={[
+            { key: 'time', label: 'Hora', placeholder: '16:00' },
+            { key: 'title', label: 'Actividad', placeholder: 'Ceremonia' },
+            { key: 'desc', label: 'Detalle', placeholder: 'Iglesia San Miguel', isTextarea: true },
+          ]}
+          onUpdate={(i, f, v) => updateArrayItem('schedule', i, f, v)}
+          onAdd={() => addArrayItem('schedule', { time: '', title: '', desc: '' })}
+          onRemove={(i) => removeArrayItem('schedule', i)}
+          inputClass={inputClass}
+        />
+      </div>
+    )
+
+    case 'gallery': return (
+      <Input label="URLs de fotos (separadas por coma)" value={data.galleryUrls?.join(', ')} onChange={(v) => update('galleryUrls', v.split(',').map((s) => s.trim()).filter(Boolean))} placeholder="https://..." isTextarea />
+    )
+
+    case 'rsvp': return (
+      <Input label="Fecha límite de confirmación" value={data.fecha_limite} onChange={(v) => update('fecha_limite', v)} placeholder="1 de Junio de 2026" />
+    )
+
+    case 'dresscode': return (
+      <Input label="Código de vestimenta" value={data.dress_code} onChange={(v) => update('dress_code', v)} placeholder="Formal: traje y corbata" isTextarea />
+    )
+
+    case 'registry': return (
+      <Input label="Mesa de regalos" value={data.registry} onChange={(v) => update('registry', v)} placeholder="El Corte Inglés #1234" isTextarea />
+    )
+
+    case 'music': return (
+      <div>
+        <label className="block text-xs font-medium mb-1.5 text-[#8C7C7A]">Canción</label>
+        <select value={data.musica} onChange={(e) => update('musica', e.target.value)} className={inputClass} style={{ borderColor: '#DFC5A8', backgroundColor: '#FBF6F0', color: '#2C1810' }}>
+          <option>Perfect — Ed Sheeran</option>
+          <option>A Thousand Years — Christina Perri</option>
+          <option>All of Me — John Legend</option>
+          <option>Canon in D — Pachelbel</option>
+          <option>Marry You — Bruno Mars</option>
+          <option>Thinking Out Loud — Ed Sheeran</option>
+          <option>Here Comes the Sun — Beatles</option>
+          <option>Ninguna</option>
+        </select>
+      </div>
+    )
+
+    case 'location': return (
+      <div className="space-y-2">
+        <Input label="Lugar de ceremonia" value={data.lugar_ceremonia} onChange={(v) => update('lugar_ceremonia', v)} placeholder="Iglesia San Miguel" />
+        <Input label="Lugar de recepción" value={data.lugar_recepcion} onChange={(v) => update('lugar_recepcion', v)} placeholder="Hacienda Los Olivos" />
+      </div>
+    )
+
+    case 'accommodation': return (
+      <div>
+        <p className="text-[9px] font-medium mb-2 text-[#8C7C7A] uppercase tracking-wider">Hoteles recomendados</p>
+        <ArrayEditor
+          items={data.hotels || []} keyLabel="hotel" keyField="hotels"
+          fields={[
+            { key: 'name', label: 'Nombre', placeholder: 'Hotel Boutique' },
+            { key: 'address', label: 'Dirección', placeholder: 'Calle Principal 123' },
+            { key: 'discount', label: 'Descuento', placeholder: '10% descuento' },
+          ]}
+          onUpdate={(i, f, v) => updateArrayItem('hotels', i, f, v)}
+          onAdd={() => addArrayItem('hotels', { name: '', address: '', discount: '' })}
+          onRemove={(i) => removeArrayItem('hotels', i)}
+          inputClass={inputClass}
+        />
+      </div>
+    )
+
+    case 'weddingParty': return (
+      <div>
+        <p className="text-[9px] font-medium mb-2 text-[#8C7C7A] uppercase tracking-wider">Miembros del cortejo</p>
+        <ArrayEditor
+          items={data.weddingParty || []} keyLabel="miembro" keyField="weddingParty"
+          fields={[
+            { key: 'name', label: 'Nombre(s)', placeholder: 'María & Juan' },
+            { key: 'role', label: 'Rol', placeholder: 'Padrinos de Velación' },
+          ]}
+          onUpdate={(i, f, v) => updateArrayItem('weddingParty', i, f, v)}
+          onAdd={() => addArrayItem('weddingParty', { name: '', role: '' })}
+          onRemove={(i) => removeArrayItem('weddingParty', i)}
+          inputClass={inputClass}
+        />
+      </div>
+    )
+
+    case 'guestMessages': return (
+      <p className="text-xs text-[#8C7C7A] italic">Los invitados escribirán mensajes directamente en la página.</p>
+    )
+
+    case 'faq': return (
+      <div>
+        <p className="text-[9px] font-medium mb-2 text-[#8C7C7A] uppercase tracking-wider">Preguntas frecuentes</p>
+        <ArrayEditor
+          items={data.faqs || []} keyLabel="pregunta" keyField="faqs"
+          fields={[
+            { key: 'q', label: 'Pregunta', placeholder: '¿Puedo llevar acompañante?', isTextarea: true },
+            { key: 'a', label: 'Respuesta', placeholder: 'Sí, indícalo al confirmar.', isTextarea: true },
+          ]}
+          onUpdate={(i, f, v) => updateArrayItem('faqs', i, f, v)}
+          onAdd={() => addArrayItem('faqs', { q: '', a: '' })}
+          onRemove={(i) => removeArrayItem('faqs', i)}
+          inputClass={inputClass}
+        />
+      </div>
+    )
+
+    case 'thankYou': return (
+      <Input label="Hashtag" value={data.hashtag} onChange={(v) => update('hashtag', v)} placeholder="Ana&Carlos2026" />
+    )
+
+    default: return null
+  }
 }
