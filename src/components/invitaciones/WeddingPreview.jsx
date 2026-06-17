@@ -27,6 +27,21 @@ const STYLES = [
     primary: '#8B4A5E', secondary: '#D4A5B5', bg: '#FDF8FA', surface: '#fff',
     text: '#4A2A30', textMuted: '#8C7A7E',
   },
+  {
+    id: 'tropical-bliss', name: 'Tropical Bliss',
+    primary: '#2D6A4F', secondary: '#E8845A', bg: '#F5FBF7', surface: '#fff',
+    text: '#1B3B2B', textMuted: '#5A8A6A',
+  },
+  {
+    id: 'boho-chic', name: 'Boho Chic',
+    primary: '#C8664E', secondary: '#E8C8A0', bg: '#FDF8F0', surface: '#fff',
+    text: '#3D2C1A', textMuted: '#8C7A60',
+  },
+  {
+    id: 'celestial', name: 'Celestial Dreams',
+    primary: '#1B1B3A', secondary: '#A8B5E0', bg: '#0D0D1A', surface: '#151530',
+    text: '#E8EAF6', textMuted: '#8A8EB0',
+  },
 ]
 
 export default function WeddingPreview({ data, selectedStyle, sections: sectionsProp }) {
@@ -43,7 +58,7 @@ export default function WeddingPreview({ data, selectedStyle, sections: sections
     root.style.setProperty('--pv-text-muted', style.textMuted)
   }, [style])
 
-  const styleObj = { ...style, isDark: style.id === 'gold-luxury' }
+  const styleObj = { ...style, isDark: style.id === 'gold-luxury' || style.id === 'celestial' }
 
   return (
     <div
