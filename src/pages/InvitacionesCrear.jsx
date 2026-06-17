@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ArrowLeft, Heart, Sparkles, Share2, Check,
   Palette, Calendar, MapPin, Music, MessageCircle, ChevronDown,
+  Plus,
 } from 'lucide-react'
 import WeddingPreview from '../components/invitaciones/WeddingPreview'
+import { SECTION_MAP, DEFAULT_SECTIONS } from '../components/invitaciones/sections'
 
 const STYLE_OPTIONS = [
   { id: 'clasico-eterno', name: 'Clásico', primary: '#7A1A2E', secondary: '#C4956A' },
@@ -35,10 +37,29 @@ export default function InvitacionesCrear() {
     hashtag: '',
   })
   const [selectedStyle, setSelectedStyle] = useState(initialDesign)
+  const [sections, setSections] = useState([...DEFAULT_SECTIONS])
   const [showCopied, setShowCopied] = useState(false)
   const [showMobilePreview, setShowMobilePreview] = useState(false)
 
   const update = (key, value) => setData((prev) => ({ ...prev, [key]: value }))
+
+  const toggleSection = (id) => {
+    setSections((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
+    )
+  }
+
+  const moveSection = (id, dir) => {
+    setSections((prev) => {
+      const idx = prev.indexOf(id)
+      if (idx === -1) return prev
+      const target = idx + dir
+      if (target < 0 || target >= prev.length) return prev
+      const next = [...prev]
+      ;[next[idx], next[target]] = [next[target], next[idx]]
+      return next
+    })
+  }
 
   const handleShare = async () => {
     const text = `🌟 ${data.novia || 'Ana'} & ${data.novio || 'Carlos'} se casan\n📅 ${data.fecha || '15 Junio 2026'}\n📍 ${data.lugar_ceremonia || 'Por confirmar'}\n✨ Creado con Eterno`
@@ -193,6 +214,66 @@ export default function InvitacionesCrear() {
                 </div>
               </section>
 
+              <section className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#DFC5A8]/20">
+                <h3 className="text-sm font-bold mb-5 flex items-center gap-2 text-[#7A1A2E]">
+                  <Plus className="w-4 h-4" />
+                  Secciones de la página
+                </h3>
+                <p className="text-[10px] text-[#8C7C7A] mb-4">Activa, desactiva y ordena las secciones</p>
+                <div className="space-y-1">
+                  {Object.entries(SECTION_MAP).map(([id, sec]) => {
+                    const active = sections.includes(id)
+                    const Icon = sec.icon
+                    return (
+                      <div
+                        key={id}
+                        className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all"
+                        style={{ backgroundColor: active ? `${sec.name === 'Portada' ? '#7A1A2E' : '#7A1A2E'}08` : 'transparent' }}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => moveSection(id, -1)}
+                            className="w-4 h-4 flex items-center justify-center rounded hover:bg-black/5 transition-all"
+                            disabled={!active}
+                            style={{ opacity: active ? 1 : 0.2, cursor: active ? 'pointer' : 'not-allowed' }}
+                          >
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#8C7C7A" strokeWidth="1.5"><path d="M4 7V1M4 1L1 4M4 1L7 4"/></svg>
+                          </button>
+                          <button
+                            onClick={() => moveSection(id, 1)}
+                            className="w-4 h-4 flex items-center justify-center rounded hover:bg-black/5 transition-all"
+                            disabled={!active}
+                            style={{ opacity: active ? 1 : 0.2, cursor: active ? 'pointer' : 'not-allowed' }}
+                          >
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#8C7C7A" strokeWidth="1.5"><path d="M4 1v6M4 7l3-3M4 7L1 4"/></svg>
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => toggleSection(id)}
+                          className="flex items-center gap-2 flex-1 text-left"
+                        >
+                          <div
+                            className="w-5 h-5 rounded-md flex items-center justify-center transition-all"
+                            style={{
+                              backgroundColor: active ? '#7A1A2E' : '#DFC5A8',
+                            }}
+                          >
+                            {active && <Check className="w-3 h-3 text-white" />}
+                          </div>
+                          <Icon className="w-3.5 h-3.5" style={{ color: active ? '#7A1A2E' : '#8C7C7A' }} />
+                          <span className="text-xs font-medium" style={{ color: active ? '#2C1810' : '#8C7C7A' }}>
+                            {sec.name}
+                          </span>
+                        </button>
+
+                        <span className="text-[9px] text-[#8C7C7A]">#{sections.indexOf(id) + 1 || '-'}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+
               <div className="text-center pt-2 pb-4">
                 <a href="/invitaciones/disenos" className="inline-flex items-center gap-1 text-xs font-medium text-[#C4956A] hover:text-[#B8864E] transition-colors">
                   Ver todos los diseños
@@ -220,7 +301,7 @@ export default function InvitacionesCrear() {
               </button>
 
               <div className={`${showMobilePreview ? 'block' : 'hidden'} lg:block`}>
-                <WeddingPreview data={data} selectedStyle={selectedStyle} />
+                <WeddingPreview data={data} selectedStyle={selectedStyle} sections={sections} />
 
                 <div className="mt-6 text-center space-y-3">
                   <div className="flex items-center justify-center gap-1.5 text-[10px] text-[#8C7C7A]">

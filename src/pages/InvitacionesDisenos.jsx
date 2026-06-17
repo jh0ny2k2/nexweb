@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, Heart, ChevronRight, Sparkles, Eye } from 'lucide-react'
 import WeddingPreview from '../components/invitaciones/WeddingPreview'
+import { DEFAULT_SECTIONS } from '../components/invitaciones/sections'
 
 const designs = [
   {
@@ -252,7 +253,7 @@ function DesignDetail({ design, onBack }) {
 
         <div className="grid lg:grid-cols-5 min-h-[60vh]">
           <div className="lg:col-span-3 p-8 lg:p-12 flex items-center justify-center">
-            <WeddingPreview data={SAMPLE_DATA} selectedStyle={d.id} />
+            <WeddingPreview data={SAMPLE_DATA} selectedStyle={d.id} sections={DEFAULT_SECTIONS} />
           </div>
 
           <div className="lg:col-span-2 p-8 lg:p-12 lg:pl-0 flex flex-col justify-center">
