@@ -1,225 +1,136 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-function isLowEndDevice() {
-  if (typeof navigator === 'undefined') return false
-  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) return true
-  return false
+function isLowEnd() {
+  return typeof navigator !== 'undefined' && navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4
 }
 
 export default function InvitationScene3D() {
-  const containerRef = useRef(null)
-  const canvasRef = useRef(null)
+  const ref = useRef(null)
 
   useEffect(() => {
-    const container = containerRef.current
-    const canvasEl = canvasRef.current
-    if (!container || !canvasEl) return
+    const el = ref.current
+    if (!el) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    if (isLowEndDevice()) return
+    if (isLowEnd()) return
 
-    const w = canvasEl.clientWidth || 400
-    const h = canvasEl.clientHeight || 500
+    const W = el.clientWidth || 320
+    const H = el.clientHeight || 400
+    if (W < 10 || H < 10) return
 
-    const scene = new THREE.Scene()
+    const s = new THREE.Scene()
+    const c = new THREE.PerspectiveCamera(25, W / H, 0.1, 50)
+    c.position.set(0, 0.3, 6)
 
-    const camera = new THREE.PerspectiveCamera(35, w / h, 0.1, 50)
-    camera.position.set(0, 0.8, 7)
+    const r = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' })
+    r.setSize(W, H)
+    r.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+    r.toneMapping = THREE.ACESFilmicToneMapping
+    r.toneMappingExposure = 1.4
+    el.appendChild(r.domElement)
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      powerPreference: 'high-performance',
-    })
-    renderer.setSize(w, h)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
-    renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.2
-    canvasEl.appendChild(renderer.domElement)
+    const al = new THREE.AmbientLight(0xffffff, 0.2)
+    s.add(al)
+    const k = new THREE.DirectionalLight('#FFE4B5', 3)
+    k.position.set(4, 6, 5)
+    s.add(k)
+    const f = new THREE.DirectionalLight('#C9A96E', 0.6)
+    f.position.set(-3, 1, -4)
+    s.add(f)
+    const rim = new THREE.DirectionalLight('#ffffff', 0.3)
+    rim.position.set(0, -3, 6)
+    s.add(rim)
 
-    const ambient = new THREE.AmbientLight(0x553344, 0.5)
-    scene.add(ambient)
-
-    const key = new THREE.DirectionalLight('#DFC5A8', 2)
-    key.position.set(3, 5, 4)
-    scene.add(key)
-
-    const fill = new THREE.DirectionalLight('#C4956A', 0.8)
-    fill.position.set(-3, 1, -4)
-    scene.add(fill)
-
-    const back = new THREE.DirectionalLight('#7A1A2E', 0.3)
-    back.position.set(0, -2, -5)
-    scene.add(back)
-
-    const ringMat = new THREE.MeshPhysicalMaterial({
-      color: '#C4956A',
-      metalness: 0.8,
-      roughness: 0.2,
-      transparent: true,
-      opacity: 0.7,
-      clearcoat: 0.4,
-      clearcoatRoughness: 0.2,
-      emissive: '#C4956A',
-      emissiveIntensity: 0.05,
-    })
-
-    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.08, 32, 64), ringMat)
-    ring1.rotation.x = Math.PI / 3
-    ring1.rotation.z = Math.PI / 6
-    scene.add(ring1)
-
-    const ring2Mat = ringMat.clone()
-    ring2Mat.color.setHex(0xDFC5A8)
-    ring2Mat.emissive.setHex(0xDFC5A8)
-    ring2Mat.opacity = 0.55
-    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.08, 32, 64), ring2Mat)
-    ring2.rotation.x = Math.PI / 3
-    ring2.rotation.z = -Math.PI / 6
-    ring2.position.x = 0.4
-    scene.add(ring2)
-
-    const sparkleMat = new THREE.MeshPhysicalMaterial({
-      color: '#DFC5A8',
-      metalness: 0.9,
-      roughness: 0.1,
-      transparent: true,
-      opacity: 0.3,
-      emissive: '#DFC5A8',
-      emissiveIntensity: 0.1,
-    })
-
-    const sparkles = []
-    for (let i = 0; i < 8; i++) {
-      const size = 0.02 + Math.random() * 0.04
-      const ico = new THREE.Mesh(new THREE.OctahedronGeometry(size, 0), sparkleMat.clone())
-      const angle = (i / 8) * Math.PI * 2
-      const radius = 1.5 + Math.random() * 0.8
-      ico.position.set(
-        Math.cos(angle) * radius,
-        (Math.random() - 0.5) * 1.2,
-        Math.sin(angle) * radius * 0.5,
-      )
-      ico.userData = {
-        angle,
-        radius,
-        speed: 0.2 + Math.random() * 0.3,
-        offset: Math.random() * Math.PI * 2,
-        rotSpeed: 1 + Math.random() * 2,
-      }
-      scene.add(ico)
-      sparkles.push(ico)
-    }
-
-    const pCount = 200
-    const pGeo = new THREE.BufferGeometry()
-    const pPos = new Float32Array(pCount * 3)
-    const pData = []
-
-    for (let i = 0; i < pCount; i++) {
-      const radius = 0.3 + Math.random() * 3
-      const angle = Math.random() * Math.PI * 2
-      pPos[i * 3] = Math.cos(angle) * radius
-      pPos[i * 3 + 1] = (Math.random() - 0.5) * 4
-      pPos[i * 3 + 2] = (Math.random() - 0.5) * 2.5
-      pData.push({
-        vy: 0.003 + Math.random() * 0.008,
-        vx: (Math.random() - 0.5) * 0.003,
-        resetY: -2 - Math.random() * 1,
-        maxY: 2 + Math.random() * 1,
+    function makeRing(radius, tube, color, emissive, metalness, roughness, clearcoat) {
+      const mat = new THREE.MeshPhysicalMaterial({
+        color, metalness, roughness, clearcoat, clearcoatRoughness: 0.1,
+        emissive: emissive || color,
+        emissiveIntensity: 0.08,
       })
+      const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 48, 80), mat)
+      return { mesh, mat }
     }
 
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
+    const rings = [
+      makeRing(1.0, 0.09, '#C9A96E', '#C9A96E', 0.95, 0.1, 0.6),
+      makeRing(0.78, 0.06, '#E8D8C0', '#E8D8C0', 0.9, 0.15, 0.4),
+      makeRing(0.58, 0.05, '#DFC98A', '#DFC98A', 0.85, 0.2, 0.3),
+    ]
+    const tilts = [Math.PI / 3.5, -Math.PI / 2.8, Math.PI / 4.5]
 
-    const pMat = new THREE.PointsMaterial({
-      color: '#C4956A',
-      size: 0.025,
-      transparent: true,
-      opacity: 0.35,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      sizeAttenuation: true,
+    rings.forEach((ring, i) => {
+      ring.mesh.rotation.x = tilts[i]
+      s.add(ring.mesh)
     })
-    const particles = new THREE.Points(pGeo, pMat)
-    scene.add(particles)
 
-    const pPosAttr = pGeo.attributes.position
+    const pc = 60
+    const pg = new THREE.BufferGeometry()
+    const pp = new Float32Array(pc * 3)
+    const pd = []
+    for (let i = 0; i < pc; i++) {
+      const a = Math.random() * Math.PI * 2
+      const rad = 1.6 + Math.random() * 1.6
+      pp[i * 3] = Math.cos(a) * rad
+      pp[i * 3 + 1] = (Math.random() - 0.5) * 2.5
+      pp[i * 3 + 2] = (Math.random() - 0.5) * 1.2
+      pd.push({ vy: 0.002 + Math.random() * 0.005, resetY: -1.5 + Math.random() * -0.3, maxY: 1.5 + Math.random() * 0.5 })
+    }
+    pg.setAttribute('position', new THREE.BufferAttribute(pp, 3))
+    const pm = new THREE.PointsMaterial({
+      color: '#C9A96E', size: 0.015, transparent: true, opacity: 0.2,
+      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+    })
+    const parts = new THREE.Points(pg, pm)
+    s.add(parts)
+    const pa = pg.attributes.position
 
-    let animId
+    let id
     const clock = new THREE.Clock()
 
-    const animate = () => {
+    function animate() {
       const delta = Math.min(clock.getDelta(), 0.05)
       const t = clock.getElapsedTime()
 
-      ring1.rotation.z = Math.PI / 6 + t * 0.25
-      ring2.rotation.z = -Math.PI / 6 + t * 0.25
-
-      ring1.position.y = Math.sin(t * 0.6) * 0.12
-      ring2.position.y = Math.sin(t * 0.6 + 0.7) * 0.12
-
-      ring1.material.emissiveIntensity = 0.04 + Math.sin(t * 0.8) * 0.04
-      ring2Mat.emissiveIntensity = 0.04 + Math.sin(t * 0.8 + 0.5) * 0.04
-
-      sparkles.forEach((s) => {
-        const u = s.userData
-        const a = u.angle + t * u.speed
-        s.position.x = Math.cos(a) * u.radius
-        s.position.z = Math.sin(a) * u.radius * 0.5
-        s.position.y += Math.sin(t * 1.5 + u.offset) * 0.003
-        s.rotation.x += delta * u.rotSpeed
-        s.rotation.y += delta * u.rotSpeed * 0.7
+      rings.forEach((ring, i) => {
+        ring.mesh.rotation.y += delta * (0.4 + i * 0.1)
+        ring.mesh.position.y = Math.sin(t * 0.6 + i * 1.2) * 0.06
+        ring.mat.emissiveIntensity = 0.06 + Math.sin(t * 0.5 + i * 0.8) * 0.03
       })
 
-      for (let i = 0; i < pCount; i++) {
+      for (let i = 0; i < pc; i++) {
         const i3 = i * 3
-        pPosAttr.array[i3 + 1] += pData[i].vy * delta * 30
-        pPosAttr.array[i3] += pData[i].vx * delta * 30
-        if (pPosAttr.array[i3 + 1] > pData[i].maxY) {
-          pPosAttr.array[i3] = (Math.random() - 0.5) * 4
-          pPosAttr.array[i3 + 1] = pData[i].resetY
-          pPosAttr.array[i3 + 2] = (Math.random() - 0.5) * 2.5
+        pa.array[i3 + 1] += pd[i].vy * delta * 30
+        if (pa.array[i3 + 1] > pd[i].maxY) {
+          pa.array[i3] = (Math.random() - 0.5) * 3.2
+          pa.array[i3 + 1] = pd[i].resetY
+          pa.array[i3 + 2] = (Math.random() - 0.5) * 1.0
         }
       }
-      pPosAttr.needsUpdate = true
+      pa.needsUpdate = true
 
-      pMat.opacity = 0.25 + Math.sin(t * 0.4) * 0.12
-
-      renderer.render(scene, camera)
-      animId = requestAnimationFrame(animate)
+      r.render(s, c)
+      id = requestAnimationFrame(animate)
     }
     animate()
 
-    const handleResize = () => {
-      const newW = canvasEl.clientWidth || 400
-      const newH = canvasEl.clientHeight || 500
-      camera.aspect = newW / newH
-      camera.updateProjectionMatrix()
-      renderer.setSize(newW, newH)
+    function resize() {
+      const nw = el.clientWidth
+      const nh = el.clientHeight
+      if (nw < 10 || nh < 10) return
+      c.aspect = nw / nh
+      c.updateProjectionMatrix()
+      r.setSize(nw, nh)
     }
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', resize)
 
     return () => {
-      cancelAnimationFrame(animId)
-      window.removeEventListener('resize', handleResize)
-      ringMat.dispose()
-      ring2Mat.dispose()
-      ring1.geometry.dispose()
-      ring2.geometry.dispose()
-      sparkles.forEach((s) => { s.geometry.dispose(); s.material.dispose() })
-      pGeo.dispose()
-      pMat.dispose()
-      renderer.dispose()
-      if (canvasEl.contains(renderer.domElement)) {
-        canvasEl.removeChild(renderer.domElement)
-      }
+      cancelAnimationFrame(id)
+      window.removeEventListener('resize', resize)
+      rings.forEach(ring => { ring.mat.dispose(); ring.mesh.geometry.dispose() })
+      pg.dispose(); pm.dispose(); r.dispose()
+      if (el.contains(r.domElement)) el.removeChild(r.domElement)
     }
   }, [])
 
-  return (
-    <div ref={containerRef} className="relative w-full h-full">
-      <div ref={canvasRef} className="absolute inset-0" />
-    </div>
-  )
+  return <div ref={ref} className="w-full h-full" />
 }
