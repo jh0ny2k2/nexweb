@@ -19,57 +19,72 @@ export default function InvitationScene3D() {
     if (W < 10 || H < 10) return
 
     const s = new THREE.Scene()
-    const c = new THREE.PerspectiveCamera(25, W / H, 0.1, 50)
-    c.position.set(0, 0.3, 6)
+    const c = new THREE.PerspectiveCamera(28, W / H, 0.1, 50)
+    c.position.set(0, 0.5, 5.5)
 
     const r = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' })
     r.setSize(W, H)
     r.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
     r.toneMapping = THREE.ACESFilmicToneMapping
-    r.toneMappingExposure = 1.4
+    r.toneMappingExposure = 1.5
     el.appendChild(r.domElement)
 
-    const al = new THREE.AmbientLight(0xffffff, 0.2)
+    const al = new THREE.AmbientLight(0xffffff, 0.3)
     s.add(al)
-    const k = new THREE.DirectionalLight('#FFE4B5', 3)
+    const k = new THREE.DirectionalLight('#FFF8E7', 3.5)
     k.position.set(4, 6, 5)
     s.add(k)
-    const f = new THREE.DirectionalLight('#C9A96E', 0.6)
+    const f = new THREE.DirectionalLight('#C9A96E', 0.5)
     f.position.set(-3, 1, -4)
     s.add(f)
-    const rim = new THREE.DirectionalLight('#ffffff', 0.3)
-    rim.position.set(0, -3, 6)
+    const rim = new THREE.DirectionalLight('#ffffff', 0.4)
+    rim.position.set(-2, -3, 4)
     s.add(rim)
+    const sp = new THREE.DirectionalLight('#FFFFFF', 0.8)
+    sp.position.set(3, 4, -5)
+    s.add(sp)
 
-    function makeRing(radius, tube, color, emissive, metalness, roughness, clearcoat) {
-      const mat = new THREE.MeshPhysicalMaterial({
-        color, metalness, roughness, clearcoat, clearcoatRoughness: 0.1,
-        emissive: emissive || color,
-        emissiveIntensity: 0.08,
-      })
-      const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 48, 80), mat)
-      return { mesh, mat }
-    }
+    const group = new THREE.Group()
 
-    const rings = [
-      makeRing(1.0, 0.09, '#C9A96E', '#C9A96E', 0.95, 0.1, 0.6),
-      makeRing(0.78, 0.06, '#E8D8C0', '#E8D8C0', 0.9, 0.15, 0.4),
-      makeRing(0.58, 0.05, '#DFC98A', '#DFC98A', 0.85, 0.2, 0.3),
-    ]
-    const tilts = [Math.PI / 3.5, -Math.PI / 2.8, Math.PI / 4.5]
-
-    rings.forEach((ring, i) => {
-      ring.mesh.rotation.x = tilts[i]
-      s.add(ring.mesh)
+    const ringMat = new THREE.MeshPhysicalMaterial({
+      color: '#C9A96E',
+      metalness: 0.95,
+      roughness: 0.1,
+      clearcoat: 0.6,
+      clearcoatRoughness: 0.1,
+      emissive: '#C9A96E',
+      emissiveIntensity: 0.08,
     })
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.08, 48, 80), ringMat)
+    ring.position.y = 0
+    group.add(ring)
 
-    const pc = 60
+    const gemMat = new THREE.MeshPhysicalMaterial({
+      color: '#F0F8FF',
+      metalness: 0.0,
+      roughness: 0.05,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      transparent: true,
+      opacity: 0.92,
+      emissive: '#B8D4F0',
+      emissiveIntensity: 0.25,
+      envMapIntensity: 2.5,
+    })
+    const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.16), gemMat)
+    gem.position.set(0, 0.85, 0)
+    group.add(gem)
+
+    group.rotation.x = Math.PI / 3.5
+    s.add(group)
+
+    const pc = 50
     const pg = new THREE.BufferGeometry()
     const pp = new Float32Array(pc * 3)
     const pd = []
     for (let i = 0; i < pc; i++) {
       const a = Math.random() * Math.PI * 2
-      const rad = 1.6 + Math.random() * 1.6
+      const rad = 1.4 + Math.random() * 1.6
       pp[i * 3] = Math.cos(a) * rad
       pp[i * 3 + 1] = (Math.random() - 0.5) * 2.5
       pp[i * 3 + 2] = (Math.random() - 0.5) * 1.2
@@ -77,7 +92,7 @@ export default function InvitationScene3D() {
     }
     pg.setAttribute('position', new THREE.BufferAttribute(pp, 3))
     const pm = new THREE.PointsMaterial({
-      color: '#C9A96E', size: 0.015, transparent: true, opacity: 0.2,
+      color: '#C9A96E', size: 0.015, transparent: true, opacity: 0.25,
       blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
     })
     const parts = new THREE.Points(pg, pm)
@@ -91,11 +106,8 @@ export default function InvitationScene3D() {
       const delta = Math.min(clock.getDelta(), 0.05)
       const t = clock.getElapsedTime()
 
-      rings.forEach((ring, i) => {
-        ring.mesh.rotation.y += delta * (0.4 + i * 0.1)
-        ring.mesh.position.y = Math.sin(t * 0.6 + i * 1.2) * 0.06
-        ring.mat.emissiveIntensity = 0.06 + Math.sin(t * 0.5 + i * 0.8) * 0.03
-      })
+      group.rotation.y += delta * 0.35
+      gemMat.emissiveIntensity = 0.2 + Math.sin(t * 1.2) * 0.15
 
       for (let i = 0; i < pc; i++) {
         const i3 = i * 3
@@ -126,7 +138,8 @@ export default function InvitationScene3D() {
     return () => {
       cancelAnimationFrame(id)
       window.removeEventListener('resize', resize)
-      rings.forEach(ring => { ring.mat.dispose(); ring.mesh.geometry.dispose() })
+      ringMat.dispose(); gemMat.dispose()
+      ring.geometry.dispose(); gem.geometry.dispose()
       pg.dispose(); pm.dispose(); r.dispose()
       if (el.contains(r.domElement)) el.removeChild(r.domElement)
     }
