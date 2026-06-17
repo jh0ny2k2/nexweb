@@ -153,14 +153,23 @@ export default function InvitacionesPublicar() {
                 </span>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#DFC5A8]/20 text-center">
-                <a
-                  href="/contact"
-                  className="inline-flex items-center gap-1 text-xs font-medium text-[#C4956A] hover:text-[#B8864E] transition-colors"
-                >
-                  ¿Necesitas algo más personalizado?
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
+              <div className="mt-6 pt-4 border-t border-[#DFC5A8]/20">
+                <div className="bg-gradient-to-br from-[#7A1A2E] to-[#5C1020] rounded-2xl p-5 text-center -mx-1">
+                  <p className="text-sm font-display font-bold text-white mb-1">
+                    ¿Quieres algo a medida?
+                  </p>
+                  <p className="text-[10px] text-white/60 mb-3 leading-relaxed">
+                    Diseño exclusivo, animaciones, fotografías reales, videoinvitación y todo lo que imagines.
+                  </p>
+                  <a
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
+                    style={{ backgroundColor: '#C4956A', color: '#fff' }}
+                  >
+                    Pedir presupuesto
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

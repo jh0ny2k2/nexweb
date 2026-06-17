@@ -371,14 +371,23 @@ export default function InvitacionesCrear() {
                   </p>
 
                   <div className="pt-2 border-t border-[#DFC5A8]/20">
-                    <a
-                      href="/contact"
-                      className="inline-flex items-center gap-1.5 text-xs font-medium transition-colors"
-                      style={{ color: '#C4956A' }}
-                    >
-                      ¿Quieres algo más personalizado?
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </a>
+                    <div className="bg-gradient-to-br from-[#7A1A2E] to-[#5C1020] rounded-2xl p-6 text-center mt-2">
+                      <p className="text-lg font-display font-bold text-white mb-2">
+                        ¿Quieres algo más personalizado?
+                      </p>
+                      <p className="text-[11px] text-white/70 mb-4 max-w-xs mx-auto leading-relaxed">
+                        Diseño exclusivo, animaciones a medida, dominio personalizado, fotografías reales, video invitación y mucho más.
+                      </p>
+                      <a
+                        href="/contact"
+                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
+                        style={{ backgroundColor: '#C4956A', color: '#fff' }}
+                      >
+                        Solicitar presupuesto
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a>
+                      <p className="text-[8px] text-white/40 mt-3">Respuesta en menos de 24 horas</p>
+                    </div>
                   </div>
                 </div>
               </div>
