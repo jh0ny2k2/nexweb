@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Invitaciones from './pages/Invitaciones'
 import InvitacionesDisenos from './pages/InvitacionesDisenos'
 import InvitacionesCrear from './pages/InvitacionesCrear'
+import InvitacionesPublicar from './pages/InvitacionesPublicar'
 import Services from './pages/Services'
 import Templates from './pages/Templates'
 import Pricing from './pages/Pricing'
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="/invitaciones" element={<Invitaciones />} />
           <Route path="/invitaciones/disenos" element={<InvitacionesDisenos />} />
           <Route path="/invitaciones/crear" element={<InvitacionesCrear />} />
+          <Route path="/invitaciones/publicar" element={<InvitacionesPublicar />} />
           <Route path="/panel" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="clientes" element={<Clients />} />

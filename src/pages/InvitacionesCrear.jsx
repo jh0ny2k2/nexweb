@@ -358,19 +358,14 @@ export default function InvitacionesCrear() {
                     Actualización en vivo
                   </div>
 
-                  <div className="relative">
-                    <button
-                      disabled
-                      className="w-full py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
-                      style={{ backgroundColor: '#7A1A2E', color: '#fff' }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                      Subir a web · 10€
-                    </button>
-                    <span className="absolute -top-1.5 -right-1.5 bg-[#C4956A] text-white text-[7px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">
-                      Próximamente
-                    </span>
-                  </div>
+                  <button
+                    onClick={() => navigate('/invitaciones/publicar')}
+                    className="w-full py-3 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                    style={{ backgroundColor: '#7A1A2E', color: '#fff' }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    Subir a web · 10€
+                  </button>
                   <p className="text-[9px] text-[#8C7C7A] leading-relaxed px-2">
                     Publica tu invitación con un dominio único. Pago único, sin suscripciones.
                   </p>
