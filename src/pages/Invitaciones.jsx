@@ -889,24 +889,24 @@ export default function Invitaciones() {
     '@graph': [
       {
         '@type': 'WebPage',
-        '@id': `https://nexweb.com${location.pathname}`,
-        url: `https://nexweb.com${location.pathname}`,
+        '@id': `https://newwebdesing.netlify.app${location.pathname}`,
+        url: `https://newwebdesing.netlify.app${location.pathname}`,
         name: 'Eterno - Invitaciones de Boda Online',
         description: 'Crea invitaciones de boda online únicas. Diseños exclusivos, personalización total, confirmación online y más.',
         inLanguage: 'es',
         isPartOf: {
-          '@id': 'https://nexweb.com/#website',
+          '@id': 'https://newwebdesing.netlify.app/#website',
         },
         breadcrumb: {
-          '@id': `https://nexweb.com${location.pathname}#breadcrumb`,
+          '@id': `https://newwebdesing.netlify.app${location.pathname}#breadcrumb`,
         },
       },
       {
         '@type': 'BreadcrumbList',
-        '@id': `https://nexweb.com${location.pathname}#breadcrumb`,
+        '@id': `https://newwebdesing.netlify.app${location.pathname}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://nexweb.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Invitaciones de Boda', item: `https://nexweb.com${location.pathname}` },
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://newwebdesing.netlify.app/' },
+          { '@type': 'ListItem', position: 2, name: 'Invitaciones de Boda', item: `https://newwebdesing.netlify.app${location.pathname}` },
         ],
       },
       {
@@ -916,7 +916,7 @@ export default function Invitaciones() {
         provider: {
           '@type': 'Organization',
           name: 'Eterno',
-          url: 'https://nexweb.com',
+          url: 'https://newwebdesing.netlify.app',
         },
         offers: {
           '@type': 'Offer',

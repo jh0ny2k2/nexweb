@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-const SITE_URL = 'https://nexweb.com'
+const SITE_URL = 'https://newwebdesing.netlify.app'
 const DEFAULT_IMAGE = '/logo.png'
 const SITE_NAME = 'NexWeb'
 
