@@ -352,19 +352,34 @@ export default function InvitacionesCrear() {
               <div className={`${showMobilePreview ? 'block' : 'hidden'} lg:block`}>
                 <WeddingPreview data={data} selectedStyle={selectedStyle} sections={sections} />
 
-                <div className="mt-6 text-center space-y-3">
+                <div className="mt-6 text-center space-y-4">
                   <div className="flex items-center justify-center gap-1.5 text-[10px] text-[#8C7C7A]">
                     <Sparkles className="w-3 h-3" />
                     Actualización en vivo
                   </div>
+
                   <button
                     onClick={handleShare}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5 w-full justify-center"
-                    style={{ backgroundColor: STYLE_OPTIONS.find((s) => s.id === selectedStyle)?.primary || '#7A1A2E', color: '#fff' }}
+                    className="w-full py-3 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                    style={{ backgroundColor: '#7A1A2E', color: '#fff' }}
                   >
-                    <Share2 className="w-3.5 h-3.5" />
-                    Compartir invitación
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    Subir a web · 10€
                   </button>
+                  <p className="text-[9px] text-[#8C7C7A] leading-relaxed px-2">
+                    Tu invitación web lista para compartir. Pago único, sin suscripciones.
+                  </p>
+
+                  <div className="pt-2 border-t border-[#DFC5A8]/20">
+                    <a
+                      href="/contact"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium transition-colors"
+                      style={{ color: '#C4956A' }}
+                    >
+                      ¿Quieres algo más personalizado?
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
