@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, Heart, ChevronRight, Sparkles, Eye } from 'lucide-react'
+import WeddingPreview from '../components/invitaciones/WeddingPreview'
 
 const designs = [
   {
@@ -221,6 +222,17 @@ function DesignCard({ design, index, onSelect }) {
   )
 }
 
+const SAMPLE_DATA = {
+  novia: 'Ana', novio: 'Carlos', fecha: '15 de Junio de 2026',
+  fecha_limite: '1 de Junio de 2026',
+  hora_ceremonia: '17:00 h', lugar_ceremonia: 'Iglesia San Miguel',
+  hora_recepcion: '19:30 h', lugar_recepcion: 'Hacienda Los Olivos',
+  historia: 'Nos conocimos en una tarde de primavera y supimos que era para siempre.',
+  dress_code: 'Formal: traje y corbata',
+  registry: 'El Corte Inglés #1234',
+  musica: 'Perfect — Ed Sheeran', hashtag: 'Ana&Carlos2026',
+}
+
 function DesignDetail({ design, onBack }) {
   const d = design
 
@@ -228,82 +240,34 @@ function DesignDetail({ design, onBack }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onBack}>
       <div
         className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl"
-        style={{ backgroundColor: d.colors.bg }}
+        style={{ backgroundColor: '#FBF6F0' }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onBack}
           className="absolute top-6 left-6 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-md hover:bg-white transition-all"
         >
-          <ArrowLeft className="w-4 h-4" style={{ color: d.colors.primary }} />
+          <ArrowLeft className="w-4 h-4" style={{ color: '#7A1A2E' }} />
         </button>
 
         <div className="grid lg:grid-cols-5 min-h-[60vh]">
           <div className="lg:col-span-3 p-8 lg:p-12 flex items-center justify-center">
-            <div
-              className="w-full max-w-sm aspect-[3/4] rounded-2xl shadow-xl overflow-hidden relative"
-              style={{ background: d.invitation.bg, border: d.invitation.border }}
-            >
-              {d.invitation.ornament && (
-                <div className="absolute top-5 left-5 right-5 flex justify-center opacity-40">
-                  <svg viewBox="0 0 120 12" className="h-3" style={{ width: '100px' }}>
-                    <path d="M0,6 L35,6" stroke={d.colors.secondary} strokeWidth="0.5" opacity="0.6" />
-                    <circle cx="40" cy="6" r="2" fill="none" stroke={d.colors.secondary} strokeWidth="0.6" opacity="0.8" />
-                    <path d="M45,2 Q50,0 55,2 Q60,4 55,6 Q50,8 45,6 Q40,4 45,2" fill="none" stroke={d.colors.secondary} strokeWidth="0.6" opacity="0.6" />
-                    <circle cx="60" cy="6" r="2" fill="none" stroke={d.colors.secondary} strokeWidth="0.6" opacity="0.8" />
-                    <path d="M65,6 L120,6" stroke={d.colors.secondary} strokeWidth="0.5" opacity="0.6" />
-                  </svg>
-                </div>
-              )}
-
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-10">
-                <p className="text-xs tracking-[0.25em] uppercase mb-4" style={{ color: d.colors.secondary }}>
-                  Save the Date
-                </p>
-                <h2 className="text-2xl sm:text-3xl font-bold text-center leading-tight mb-3" style={{
-                  color: d.id === 'gold-luxury' || d.id === 'celestial' ? '#fff' : d.colors.text,
-                  fontFamily: d.invitation.font === 'script' ? "'Georgia', serif" :
-                              d.invitation.font === 'sans' ? "'Inter', sans-serif" : "'Georgia', serif",
-                  fontStyle: d.invitation.font === 'script' ? 'italic' : 'normal',
-                }}>
-                  Nuestra Boda
-                </h2>
-                <div className="w-12 h-px my-3" style={{ backgroundColor: d.colors.secondary, opacity: 0.5 }} />
-                <p className="text-xs tracking-[0.2em] mb-1" style={{ color: d.colors.text, opacity: 0.6 }}>
-                  15 de Junio de 2026
-                </p>
-                <p className="text-[10px] tracking-[0.15em]" style={{ color: d.colors.text, opacity: 0.5 }}>
-                  A las 17:00 h
-                </p>
-                <p className="text-[10px] tracking-[0.15em] mt-2 text-center max-w-[200px]" style={{ color: d.colors.text, opacity: 0.5 }}>
-                  Hacienda Los Olivos, Madrid
-                </p>
-
-                {d.invitation.ornament && (
-                  <div className="absolute bottom-6 left-6 right-6 flex justify-center opacity-30">
-                    <Heart className="w-4 h-4" style={{ color: d.colors.secondary }} />
-                  </div>
-                )}
-              </div>
-            </div>
+            <WeddingPreview data={SAMPLE_DATA} selectedStyle={d.id} />
           </div>
 
           <div className="lg:col-span-2 p-8 lg:p-12 lg:pl-0 flex flex-col justify-center">
             <p className="text-xs tracking-[0.25em] uppercase mb-3" style={{ color: d.colors.secondary }}>{d.tag}</p>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4" style={{ color: d.colors.text }}>{d.name}</h2>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: d.colors.text, opacity: 0.7 }}>
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4" style={{ color: '#2C1810' }}>{d.name}</h2>
+            <p className="text-sm leading-relaxed mb-6" style={{ color: '#8C7C7A' }}>
               {d.description}
             </p>
 
             <div className="flex flex-wrap gap-2 mb-8">
-              {['Personalizable', 'Confirmación online', 'Galería', 'Música'].map((f) => (
+              {['Página web completa', 'Confirmación online', 'Galería de fotos', 'Cuenta regresiva', 'Mapa', 'Música'].map((f) => (
                 <span
                   key={f}
                   className="text-[10px] font-medium uppercase tracking-wider px-3 py-1.5 rounded-full"
-                  style={{
-                    backgroundColor: d.colors.primary + '12',
-                    color: d.colors.primary,
-                  }}
+                  style={{ backgroundColor: '#7A1A2E10', color: '#7A1A2E' }}
                 >
                   {f}
                 </span>
@@ -313,13 +277,10 @@ function DesignDetail({ design, onBack }) {
             <Link
               to={`/invitaciones/crear?design=${d.id}`}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5"
-              style={{
-                backgroundColor: d.colors.primary,
-                color: d.id === 'gold-luxury' || d.id === 'celestial' ? d.colors.secondary : '#fff',
-              }}
+              style={{ backgroundColor: '#7A1A2E', color: '#fff' }}
             >
               <Sparkles className="w-4 h-4" />
-              Usar este diseño
+              Personalizar este diseño
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
