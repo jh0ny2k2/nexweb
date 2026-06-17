@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   Heart, Sparkles, Share2, Palette,
   CheckCircle, ArrowRight, Star,
   Smartphone, Camera, Calendar,
   MapPin, Music, MessageCircle,
   Menu, X, Mail, Phone, Globe, Heart as HeartIcon,
-  Quote, Feather, Diamond,
+  Quote, Diamond,
 } from 'lucide-react'
 import InvitationScene3D from '../components/invitaciones/InvitationScene3D'
+import SEO from '../components/SEO'
 
 function useScrollReveal() {
   useEffect(() => {
@@ -773,9 +774,62 @@ function Footer() {
 
 export default function Invitaciones() {
   useScrollReveal()
+  const location = useLocation()
+
+  const seoSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `https://nexweb.com${location.pathname}`,
+        url: `https://nexweb.com${location.pathname}`,
+        name: 'Eterno - Invitaciones de Boda Online',
+        description: 'Crea invitaciones de boda online únicas. Diseños exclusivos, personalización total, confirmación online y más.',
+        inLanguage: 'es',
+        isPartOf: {
+          '@id': 'https://nexweb.com/#website',
+        },
+        breadcrumb: {
+          '@id': `https://nexweb.com${location.pathname}#breadcrumb`,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `https://nexweb.com${location.pathname}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://nexweb.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Invitaciones de Boda', item: `https://nexweb.com${location.pathname}` },
+        ],
+      },
+      {
+        '@type': 'Service',
+        name: 'Creador de Invitaciones de Boda Online',
+        description: 'Plataforma para crear invitaciones de boda digitales personalizadas con diseños exclusivos, confirmación online, galería de fotos y música ambiente.',
+        provider: {
+          '@type': 'Organization',
+          name: 'Eterno',
+          url: 'https://nexweb.com',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '10.00',
+          priceCurrency: 'EUR',
+          description: 'Desde 10€ por invitación digital',
+        },
+      },
+    ],
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Eterno - Invitaciones de Boda Online"
+        description="Crea invitaciones de boda online únicas con Eterno. Diseños exclusivos, personalización total, confirmación online, galería de fotos y música. De lo clásico a lo contemporáneo."
+        keywords="invitaciones de boda online, invitaciones digitales, invitaciones boda personalizadas, wedding invitations online, crear invitacion boda, invitaciones boda originales, diseño invitaciones boda"
+        url="/invitaciones"
+        type="website"
+        schema={seoSchema}
+      />
       <Navbar />
       <main className="flex-1">
         <Hero />
